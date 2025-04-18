@@ -1,6 +1,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
+
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
@@ -31,11 +32,17 @@
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "Material.h"
+
+//Modelos ambientación
+#include "Ambientacion.h"
+
 const float toRadians = 3.14159265f / 180.0f;
+
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
+std::vector<Model> objetosAmbientacion;
 
 Camera camera;
 
@@ -45,6 +52,17 @@ Texture plainTexture;
 Texture pisoTexture;
 
 Texture tierraTexture;
+
+//Modelos ambientación
+Model banca;
+Model luminaria1;
+Model luminaria2;
+Model luminaria3;
+Model arbol1;
+Model arbol2;
+Model arbol3;
+Model bote1;
+Model bote2;
 
 Skybox skybox;
 
@@ -276,6 +294,36 @@ int main()
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
 
+	//Modelos ambientación
+	banca = Model();
+	banca.LoadModel("Models/banca.obj");
+	luminaria1 = Model();
+	luminaria1.LoadModel("Models/luminaria1.obj");
+	luminaria2 = Model();
+	luminaria2.LoadModel("Models/luminaria2.obj");
+	luminaria3 = Model();
+	luminaria3.LoadModel("Models/luminaria3.obj");
+	arbol1 = Model();
+	arbol1.LoadModel("Models/arbol1.obj");
+	arbol2 = Model();
+	arbol2.LoadModel("Models/arbol2.obj");
+	arbol3 = Model();
+	arbol3.LoadModel("Models/arbol3.obj");
+	bote1 = Model();
+	bote1.LoadModel("Models/bote1.obj");
+	bote2 = Model();
+	bote2.LoadModel("Models/bote2.obj");
+	
+	objetosAmbientacion.push_back(banca);
+	objetosAmbientacion.push_back(luminaria1);
+	objetosAmbientacion.push_back(luminaria2);
+	objetosAmbientacion.push_back(luminaria3);
+	objetosAmbientacion.push_back(arbol1);
+	objetosAmbientacion.push_back(arbol2);
+	objetosAmbientacion.push_back(arbol3);
+	objetosAmbientacion.push_back(bote1);
+	objetosAmbientacion.push_back(bote2);
+
 	std::vector<std::string> skyboxFaces;
 
 	skyboxFaces.push_back("Textures/Skybox/right.tga");
@@ -375,8 +423,10 @@ int main()
 
 		pisoTexture.UseTexture();
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-
 		meshList[2]->RenderMesh();
+
+		//Modelos ambientación
+		ambientacion(model, uniformModel, objetosAmbientacion);
 
 		//Lanzamiento de dados
 		model = glm::mat4(1.0);
