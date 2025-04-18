@@ -1,6 +1,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
+
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
@@ -25,17 +26,23 @@
 #include"Model.h"
 #include "Skybox.h"
 
-//para iluminaci髇
+//para iluminaci贸n
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "Material.h"
+
+//Modelos ambientaci贸n
+#include "Ambientacion.h"
+
 const float toRadians = 3.14159265f / 180.0f;
+
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
+std::vector<Model> objetosAmbientacion;
 
 Camera camera;
 
@@ -45,7 +52,19 @@ Texture plainTexture;
 Texture pisoTexture;
 Texture tierraTexture;
 
+//Modelo puestos
 Model Stand;
+
+//Modelos ambientaci贸n
+Model banca;
+Model luminaria1;
+Model luminaria2;
+Model luminaria3;
+Model arbol1;
+Model arbol2;
+Model arbol3;
+Model bote1;
+Model bote2;
 
 Skybox skybox;
 
@@ -72,7 +91,7 @@ static const char* vShader = "shaders/shader_light.vert";
 static const char* fShader = "shaders/shader_light.frag";
 
 
-//funci髇 de calculo de normales por promedio de v閞tices 
+//funci贸n de calculo de normales por promedio de v茅rtices 
 void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
 	unsigned int vLength, unsigned int normalOffset)
 {
@@ -274,9 +293,40 @@ int main()
 	pisoTexture.LoadTextureA();
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
-
+  
+  //Modelo puestos
 	Stand = Model();
 	Stand.LoadModel("Models/StandHacha.obj");
+
+	//Modelos ambientaci贸n
+	banca = Model();
+	banca.LoadModel("Models/banca.obj");
+	luminaria1 = Model();
+	luminaria1.LoadModel("Models/luminaria1.obj");
+	luminaria2 = Model();
+	luminaria2.LoadModel("Models/luminaria2.obj");
+	luminaria3 = Model();
+	luminaria3.LoadModel("Models/luminaria3.obj");
+	arbol1 = Model();
+	arbol1.LoadModel("Models/arbol1.obj");
+	arbol2 = Model();
+	arbol2.LoadModel("Models/arbol2.obj");
+	arbol3 = Model();
+	arbol3.LoadModel("Models/arbol3.obj");
+	bote1 = Model();
+	bote1.LoadModel("Models/bote1.obj");
+	bote2 = Model();
+	bote2.LoadModel("Models/bote2.obj");
+	
+	objetosAmbientacion.push_back(banca);
+	objetosAmbientacion.push_back(luminaria1);
+	objetosAmbientacion.push_back(luminaria2);
+	objetosAmbientacion.push_back(luminaria3);
+	objetosAmbientacion.push_back(arbol1);
+	objetosAmbientacion.push_back(arbol2);
+	objetosAmbientacion.push_back(arbol3);
+	objetosAmbientacion.push_back(bote1);
+	objetosAmbientacion.push_back(bote2);
 
 	std::vector<std::string> skyboxFaces;
 
@@ -292,7 +342,7 @@ int main()
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
-	//luz direccional, s髄o 1 y siempre debe de existir 
+	//luz direccional, s贸lo 1 y siempre debe de existir 
 	// Para la luz del sol
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
 		0.3f, 0.3f,
@@ -300,7 +350,7 @@ int main()
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
 
-	//Declaraci髇 de primer luz puntual
+	//Declaraci贸n de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
 		1.0f, 1.0f,
 		5.0f, 3.0f, -4.0f,
@@ -350,7 +400,7 @@ int main()
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
 
-		//informaci髇 en el shader de intensidad especular y brillo
+		//informaci贸n en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
@@ -358,8 +408,8 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-		// luz ligada a la c醡ara de tipo flash
-		//sirve para que en tiempo de ejecuci髇 (dentro del while) se cambien propiedades de la luz
+		// luz ligada a la c谩mara de tipo flash
+		//sirve para que en tiempo de ejecuci贸n (dentro del while) se cambien propiedades de la luz
 		//glm::vec3 lowerLight = camera.getCameraPosition();
 		//lowerLight.y -= 0.3f;
 		//spotLights1[0].SetFlash(lowerLight, camera.getCameraDirection());
@@ -378,8 +428,10 @@ int main()
 
 		pisoTexture.UseTexture();
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-
 		meshList[2]->RenderMesh();
+
+		//Modelos ambientaci贸n
+		ambientacion(model, uniformModel, objetosAmbientacion);
 
 		//Lanzamiento de dados
 		model = glm::mat4(1.0);
@@ -451,7 +503,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
 		Stand.RenderModel();
 
-		//L韓ea de boliche
+		//L铆nea de boliche
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-80.0f, -1.02f, 140.0f));
 		modelaux = model;
@@ -465,7 +517,7 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
 		Stand.RenderModel();
 
-		//羠ea de comida
+		//脕rea de comida
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-210.0f, -1.02f, 0.0f));
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 220.0f));
