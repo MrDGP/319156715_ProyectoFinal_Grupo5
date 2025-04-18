@@ -43,8 +43,9 @@ Texture brickTexture;
 Texture dirtTexture;
 Texture plainTexture;
 Texture pisoTexture;
-
 Texture tierraTexture;
+
+Model Stand;
 
 Skybox skybox;
 
@@ -269,12 +270,13 @@ int main()
 	dirtTexture.LoadTextureA();
 	plainTexture = Texture("Textures/plain.png");
 	plainTexture.LoadTextureA();
-
 	pisoTexture = Texture("Textures/pasto.png");
 	pisoTexture.LoadTextureA();
-
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
+
+	Stand = Model();
+	Stand.LoadModel("Models/StandHacha.obj");
 
 	std::vector<std::string> skyboxFaces;
 
@@ -321,6 +323,7 @@ int main()
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 1000.0f);
 
 	glm::mat4 model(1.0);
+	glm::mat4 modelaux(1.0);
 	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	////Loop mientras no se cierra la ventana
@@ -360,7 +363,7 @@ int main()
 		//glm::vec3 lowerLight = camera.getCameraPosition();
 		//lowerLight.y -= 0.3f;
 		//spotLights1[0].SetFlash(lowerLight, camera.getCameraDirection());
-		
+
 		//Luces al shader 
 		// shaderList[0].SetSpotLights(spotLights, spotLightCount);
 		// shaderList[0].SetPointLights(pointLights1, pointLightCount1);
@@ -381,50 +384,86 @@ int main()
 		//Lanzamiento de dados
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(180.0f, -1.02f, -140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		//modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
 		//Lanzamiento de hacha
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(180.0f, -1.02f, 140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
 		//Dardos
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(50.0f, -1.02f, -140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		//modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
 		//Golpea al topo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(50.0f, -1.02f, 140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
-	
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
+
 		//Jaula de bateo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-80.0f, -1.02f, -140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		//modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
 		//Línea de boliche
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-80.0f, -1.02f, 140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
 		//Área de comida
 		model = glm::mat4(1.0);
