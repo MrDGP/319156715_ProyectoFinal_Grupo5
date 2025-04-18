@@ -26,14 +26,14 @@
 #include"Model.h"
 #include "Skybox.h"
 
-//para iluminaci髇
+//para iluminaci贸n
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "Material.h"
 
-//Modelos ambientaci髇
+//Modelos ambientaci贸n
 #include "Ambientacion.h"
 
 const float toRadians = 3.14159265f / 180.0f;
@@ -50,10 +50,12 @@ Texture brickTexture;
 Texture dirtTexture;
 Texture plainTexture;
 Texture pisoTexture;
-
 Texture tierraTexture;
 
-//Modelos ambientaci髇
+//Modelo puestos
+Model Stand;
+
+//Modelos ambientaci贸n
 Model banca;
 Model luminaria1;
 Model luminaria2;
@@ -89,7 +91,7 @@ static const char* vShader = "shaders/shader_light.vert";
 static const char* fShader = "shaders/shader_light.frag";
 
 
-//funci髇 de calculo de normales por promedio de v閞tices 
+//funci贸n de calculo de normales por promedio de v茅rtices 
 void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
 	unsigned int vLength, unsigned int normalOffset)
 {
@@ -287,14 +289,16 @@ int main()
 	dirtTexture.LoadTextureA();
 	plainTexture = Texture("Textures/plain.png");
 	plainTexture.LoadTextureA();
-
 	pisoTexture = Texture("Textures/pasto.png");
 	pisoTexture.LoadTextureA();
-
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
+  
+  //Modelo puestos
+	Stand = Model();
+	Stand.LoadModel("Models/StandHacha.obj");
 
-	//Modelos ambientaci髇
+	//Modelos ambientaci贸n
 	banca = Model();
 	banca.LoadModel("Models/banca.obj");
 	luminaria1 = Model();
@@ -338,7 +342,7 @@ int main()
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
-	//luz direccional, s髄o 1 y siempre debe de existir 
+	//luz direccional, s贸lo 1 y siempre debe de existir 
 	// Para la luz del sol
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
 		0.3f, 0.3f,
@@ -346,7 +350,7 @@ int main()
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
 
-	//Declaraci髇 de primer luz puntual
+	//Declaraci贸n de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
 		1.0f, 1.0f,
 		5.0f, 3.0f, -4.0f,
@@ -369,6 +373,7 @@ int main()
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 1000.0f);
 
 	glm::mat4 model(1.0);
+	glm::mat4 modelaux(1.0);
 	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	////Loop mientras no se cierra la ventana
@@ -395,7 +400,7 @@ int main()
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
 
-		//informaci髇 en el shader de intensidad especular y brillo
+		//informaci贸n en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
@@ -403,12 +408,12 @@ int main()
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-		// luz ligada a la c醡ara de tipo flash
-		//sirve para que en tiempo de ejecuci髇 (dentro del while) se cambien propiedades de la luz
+		// luz ligada a la c谩mara de tipo flash
+		//sirve para que en tiempo de ejecuci贸n (dentro del while) se cambien propiedades de la luz
 		//glm::vec3 lowerLight = camera.getCameraPosition();
 		//lowerLight.y -= 0.3f;
 		//spotLights1[0].SetFlash(lowerLight, camera.getCameraDirection());
-		
+
 		//Luces al shader 
 		// shaderList[0].SetSpotLights(spotLights, spotLightCount);
 		// shaderList[0].SetPointLights(pointLights1, pointLightCount1);
@@ -425,58 +430,94 @@ int main()
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		//Modelos ambientaci髇
+		//Modelos ambientaci贸n
 		ambientacion(model, uniformModel, objetosAmbientacion);
 
 		//Lanzamiento de dados
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(180.0f, -1.02f, -140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		//modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
 		//Lanzamiento de hacha
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(180.0f, -1.02f, 140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
 		//Dardos
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(50.0f, -1.02f, -140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		//modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
 		//Golpea al topo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(50.0f, -1.02f, 140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
-	
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
+
 		//Jaula de bateo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-80.0f, -1.02f, -140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		//modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
-		//L韓ea de boliche
+		//L铆nea de boliche
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-80.0f, -1.02f, 140.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
+		modelaux = glm::translate(modelaux, glm::vec3(0.0f, 0.0f, 0.0f));
+		modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
+		Stand.RenderModel();
 
-		//羠ea de comida
+		//脕rea de comida
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-210.0f, -1.02f, 0.0f));
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 220.0f));
