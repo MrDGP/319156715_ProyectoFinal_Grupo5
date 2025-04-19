@@ -435,7 +435,7 @@ int main()
 
 		//Lanzamiento de dados
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(180.0f, -1.02f, -140.0f));
+		model = glm::translate(model, glm::vec3(180.0f, -0.8f, -140.0f));
 		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -449,7 +449,7 @@ int main()
 
 		//Lanzamiento de hacha
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(180.0f, -1.02f, 140.0f));
+		model = glm::translate(model, glm::vec3(180.0f, -0.8f, 140.0f));
 		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -463,7 +463,7 @@ int main()
 
 		//Dardos
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(50.0f, -1.02f, -140.0f));
+		model = glm::translate(model, glm::vec3(50.0f, -0.8f, -140.0f));
 		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -477,7 +477,7 @@ int main()
 
 		//Golpea al topo
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(50.0f, -1.02f, 140.0f));
+		model = glm::translate(model, glm::vec3(50.0f, -0.8f, 140.0f));
 		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -491,7 +491,7 @@ int main()
 
 		//Jaula de bateo
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-80.0f, -1.02f, -140.0f));
+		model = glm::translate(model, glm::vec3(-80.0f, -0.8f, -140.0f));
 		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -505,7 +505,7 @@ int main()
 
 		//Línea de boliche
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-80.0f, -1.02f, 140.0f));
+		model = glm::translate(model, glm::vec3(-80.0f, -0.8f, 140.0f));
 		modelaux = model;
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 130.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -519,7 +519,7 @@ int main()
 
 		//Área de comida
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-210.0f, -1.02f, 0.0f));
+		model = glm::translate(model, glm::vec3(-210.0f, -0.8f, 0.0f));
 		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 220.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
@@ -527,70 +527,70 @@ int main()
 
 		//Caminos
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(180.0f, -1.02f, 0.0f));
+		model = glm::translate(model, glm::vec3(180.0f, -0.8f, 0.0f));
 		model = glm::scale(model, glm::vec3(20.0f, 0.05f, 150.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(225.0f, -1.02f, 0.0f));
+		model = glm::translate(model, glm::vec3(225.0f, -0.8f, 0.0f));
 		model = glm::scale(model, glm::vec3(70.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(115.0f, -1.02f, -140.0f));
+		model = glm::translate(model, glm::vec3(115.0f, -0.8f, -140.0f));
 		model = glm::scale(model, glm::vec3(50.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(115.0f, -1.02f, 140.0f));
+		model = glm::translate(model, glm::vec3(115.0f, -0.8f, 140.0f));
 		model = glm::scale(model, glm::vec3(50.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-15.0f, -1.02f, -140.0f));
+		model = glm::translate(model, glm::vec3(-15.0f, -0.8f, -140.0f));
 		model = glm::scale(model, glm::vec3(50.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-15.0f, -1.02f, 140.0f));
+		model = glm::translate(model, glm::vec3(-15.0f, -0.8f, 140.0f));
 		model = glm::scale(model, glm::vec3(50.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-170.0f, -1.02f, -140.0f));
+		model = glm::translate(model, glm::vec3(-170.0f, -0.8f, -140.0f));
 		model = glm::scale(model, glm::vec3(100.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-170.0f, -1.02f, 140.0f));
+		model = glm::translate(model, glm::vec3(-170.0f, -0.8f, 140.0f));
 		model = glm::scale(model, glm::vec3(100.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-210.0f, -1.02f, -120.0f));
+		model = glm::translate(model, glm::vec3(-210.0f, -0.8f, -120.0f));
 		model = glm::scale(model, glm::vec3(20.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
 		meshList[4]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-210.0f, -1.02f, 120.0f));
+		model = glm::translate(model, glm::vec3(-210.0f, -0.8f, 120.0f));
 		model = glm::scale(model, glm::vec3(20.0f, 0.05f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tierraTexture.UseTexture();
