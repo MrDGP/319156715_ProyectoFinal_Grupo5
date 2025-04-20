@@ -46,7 +46,10 @@
 #include "Topos.h"
 
 const float toRadians = 3.14159265f / 180.0f;
-
+//variables para el ciclo de dia y de noche
+bool esDeDia = true;
+float intensidad = 0.5f;  // inicia de día
+float velocidad = 0.00005f; // velocidad de cambio de luz
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
@@ -88,6 +91,8 @@ Model Stand6;
 
 //modelos de personajes 
 Model gumball;
+Model yoshi;
+Model snoopy;
 
 //Modelos ambientación
 Model banca;
@@ -392,6 +397,13 @@ int main()
 	//gumball
 	gumball = Model();
 	gumball.LoadModel("Models/gumball.obj");
+	//yoshi
+	yoshi = Model();
+	yoshi.LoadModel("Models/yoshi.obj");
+
+	//snoopy
+	snoopy = Model();
+	snoopy.LoadModel("Models/snoopy.obj");
 
 	
 	objetosAmbientacion.push_back(banca);
@@ -573,6 +585,26 @@ int main()
 		// shaderList[0].SetSpotLights(spotLights, spotLightCount);
 		// shaderList[0].SetPointLights(pointLights1, pointLightCount1);
 
+		//Bloque para ciclo de dia y de noche 
+		if (esDeDia) {
+			intensidad -= velocidad;
+			if (intensidad <= 0.01f) {
+				intensidad = 0.01f; // mínimo de noche
+				esDeDia = false;
+			}
+		}
+		else {
+			intensidad += velocidad;
+			if (intensidad >= 0.9f) {
+				intensidad = 0.9f; // máximo de día
+				esDeDia = true;
+			}
+		}
+		mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,  // color
+			intensidad * 0.3f,  // intensidad ambiental (más baja)
+			intensidad,         // intensidad difusa (más fuerte)
+			0.0f, -1.0f, 0.0f); // dirección
+
 		shaderList[0].SetDirectionalLight(&mainLight);
 
 		model = glm::mat4(1.0);
@@ -588,16 +620,36 @@ int main()
 		//Modelos ambientación
 		ambientacion(model, uniformModel, objetosAmbientacion);
 
-		//Personajes
+		//Personajes  (Para utilizar un personaje distinto comenta el personaje actual y descomenta el que quieras usar)
+		
+		////gumball
+		//model = glm::mat4(1.0);
+		//model = glm::translate(model, posicionModelo);
+		//model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		//model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
+		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//gumball.RenderModel();
+		
+		/*
+		//yoshi
 
-		//gumball
 		model = glm::mat4(1.0);
 		model = glm::translate(model, posicionModelo);
-		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		gumball.RenderModel();
-  
+		yoshi.RenderModel();
+		*/
+		
+		//snoopy
+		model = glm::mat4(1.0);
+		model = glm::translate(model, posicionModelo);
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		snoopy.RenderModel();
+		
+
     //Dados
     model = glm::mat4(1.0);
 		dados(model, uniformModel, objetosDados, tierraTexture, meshList);
