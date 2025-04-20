@@ -60,7 +60,11 @@ std::vector<Model> objetosHacha;
 std::vector<Model> objetosTopos;
 std::vector<Model> objetosComida;
 
+//camaras realizadas 
 Camera camera;
+Camera aerialCamera;
+Camera terceraPersonaCamera;
+Camera camaraPuestos;
 
 Texture brickTexture;
 Texture dirtTexture;
@@ -76,10 +80,14 @@ Model Stand4;
 Model Stand5;
 Model Stand6;
 
+
 ////Modelo puestos comida
 //Model StandComida1;
 //Model StandComida2;
 //Model StandComida3;
+
+//modelos de personajes 
+Model gumball;
 
 //Modelos ambientación
 Model banca;
@@ -307,7 +315,25 @@ int main()
 	CrearDado();
 	CreateShaders();
 
+	//camara libre
 	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.3f, 0.5f);
+
+
+	aerialCamera = Camera(glm::vec3(0.0f, 450.0f, 0.0f),  // posición muy arriba
+		glm::vec3(0.0f, 1.0f, 0.0f),    // vector Up
+		-90.0f,                        // yaw
+		-89.9f,                        // pitch casi vertical (evita ser -90 exacto)
+		0.0f, 0.0f);                   // sin movimiento o rotación
+
+	//Tercera persona (siguiendo coche desde atrás)
+	terceraPersonaCamera = Camera(glm::vec3(2.0f, 2.0f, 0.5f),  // posición detrás del coche
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		180.0f, 0.0f, 0.3f, 0.5f);  // sin movimiento
+
+	// Cámara Para posicionar en los puestos
+	camaraPuestos = Camera(glm::vec3(-80.0f, 20.0f, -40.0f),  //frente a un puesto
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		270.0f, 0.0f, 0.0f, 0.0f);
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -319,7 +345,6 @@ int main()
 	pisoTexture.LoadTextureA();
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
-
   
 	//Modelos puestos
 	Stand = Model();
@@ -361,6 +386,13 @@ int main()
 	bote1.LoadModel("Models/bote1.obj");
 	bote2 = Model();
 	bote2.LoadModel("Models/bote2.obj");
+
+	//Modelos de personajes
+	
+	//gumball
+	gumball = Model();
+	gumball.LoadModel("Models/gumball.obj");
+
 	
 	objetosAmbientacion.push_back(banca);
 	objetosAmbientacion.push_back(luminaria1);
@@ -433,6 +465,7 @@ int main()
 	glm::mat4 model(1.0);
 	glm::mat4 modelaux(1.0);
 	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 posicionModelo = glm::vec3(-90.0f, -1.0f, 0.0f); // posición inicial de Modelos
 
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -442,10 +475,70 @@ int main()
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
+
+
 		//Recibir eventos del usuario
 		glfwPollEvents();
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		//variables para control de camara y personajes
+		glm::vec3 cameraPos = camera.getCameraPosition();
+		glm::vec3 cameraDir = camera.getCameraDirection();
+		float angulo = atan2(terceraPersonaCamera.getCameraDirection().x, terceraPersonaCamera.getCameraDirection().z);
+		Camera* activeCamera;
+
+		//Switch que controla la camara activa 
+		switch (mainWindow.getCamaraActiva()) {
+		case 0:
+			activeCamera = &camera;
+			break;
+		case 1:
+			activeCamera = &aerialCamera;
+			break;
+
+		case 2: {
+			// Dirección que apunta la cámara (sin componente Y)
+			glm::vec3 forward = glm::normalize(glm::vec3(terceraPersonaCamera.getCameraDirection().x, 0.0f, terceraPersonaCamera.getCameraDirection().z));
+
+			// Offset detrás y arriba del modelo
+			glm::vec3 camOffset = -forward * 7.0f + glm::vec3(0.0f, 2.5f, 0.0f);
+
+			// Posición de la cámara = posición del modelo + offset
+			glm::vec3 camPos = posicionModelo + camOffset;
+
+			terceraPersonaCamera.setPosition(camPos);
+			activeCamera = &terceraPersonaCamera;
+			break;
+		}
+		case 3:
+			activeCamera = &camaraPuestos;
+			break;
+		default:
+			activeCamera = &camera; // Fallback a cámara libre
+			break;
+		}
+
+		GLfloat xChange = mainWindow.getXChange();
+		GLfloat yChange = mainWindow.getYChange();
+
+		//Switch para control de mouse en la camara activa
+		switch (mainWindow.getCamaraActiva()) {
+		case 0: camera.mouseControl(xChange, yChange); camera.keyControl(mainWindow.getsKeys(), deltaTime); break;
+		case 1: aerialCamera.mouseControl(xChange, yChange); break;
+		case 2:
+			terceraPersonaCamera.mouseControl(xChange, yChange);
+			glm::vec3 forward = glm::normalize(glm::vec3(terceraPersonaCamera.getCameraDirection().x, 0.0f, terceraPersonaCamera.getCameraDirection().z));
+			glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
+
+				if (mainWindow.getsKeys()[GLFW_KEY_W])
+					posicionModelo += forward * deltaTime * 1.5f;
+				if (mainWindow.getsKeys()[GLFW_KEY_S])
+					posicionModelo -= forward * deltaTime * 1.5f;
+				if (mainWindow.getsKeys()[GLFW_KEY_A])
+					posicionModelo -= right * deltaTime * 1.5f;
+				if (mainWindow.getsKeys()[GLFW_KEY_D])
+					posicionModelo += right * deltaTime * 1.5f;
+			break;
+		case 3: camaraPuestos.mouseControl(xChange, yChange); break;
+		}
 
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -463,8 +556,12 @@ int main()
 		uniformShininess = shaderList[0].GetShininessLocation();
 
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(activeCamera->calculateViewMatrix()));
+		glUniform3f(uniformEyePosition,
+			activeCamera->getCameraPosition().x,
+			activeCamera->getCameraPosition().y,
+			activeCamera->getCameraPosition().z);
+
 
 		// luz ligada a la cámara de tipo flash
 		//sirve para que en tiempo de ejecución (dentro del while) se cambien propiedades de la luz
@@ -491,9 +588,18 @@ int main()
 		//Modelos ambientación
 		ambientacion(model, uniformModel, objetosAmbientacion);
 
+		//Personajes
 
-		//Lanzamiento de dados
+		//gumball
 		model = glm::mat4(1.0);
+		model = glm::translate(model, posicionModelo);
+		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+		model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		gumball.RenderModel();
+  
+    //Dados
+    model = glm::mat4(1.0);
 		dados(model, uniformModel, objetosDados, tierraTexture, meshList);
 
 		//Lanzamiento de hacha
@@ -515,7 +621,6 @@ int main()
 		//Línea de boliche
 		model = glm::mat4(1.0);
 		bolos(model, uniformModel, objetosBolos, tierraTexture, meshList);
-
 
 		//Caminos y área de comida
 		model = glm::mat4(1.0);
