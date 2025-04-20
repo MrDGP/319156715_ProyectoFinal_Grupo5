@@ -35,9 +35,9 @@
 
 //Modelos ambientación
 #include "Ambientacion.h"
+#include "Comida.h"
 
 //Juegos
-
 #include "Dados.h"
 #include "Bateo.h"
 #include "Bolos.h"
@@ -58,6 +58,7 @@ std::vector<Model> objetosBolos;
 std::vector<Model> objetosDardos;
 std::vector<Model> objetosHacha;
 std::vector<Model> objetosTopos;
+std::vector<Model> objetosComida;
 
 //camaras realizadas 
 Camera camera;
@@ -78,6 +79,12 @@ Model Stand3;
 Model Stand4;
 Model Stand5;
 Model Stand6;
+
+
+////Modelo puestos comida
+//Model StandComida1;
+//Model StandComida2;
+//Model StandComida3;
 
 //modelos de personajes 
 Model gumball;
@@ -339,7 +346,7 @@ int main()
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
   
-  //Modelos puestos
+	//Modelos puestos
 	Stand = Model();
 	Stand.LoadModel("Models/StandHacha.obj");
 	Stand2 = Model();
@@ -396,6 +403,20 @@ int main()
 	objetosAmbientacion.push_back(arbol3);
 	objetosAmbientacion.push_back(bote1);
 	objetosAmbientacion.push_back(bote2);
+
+
+	////Modelos comida
+	//StandComida1 = Model();
+	//StandComida1.LoadModel("Models/banca.obj");
+	//StandComida2 = Model();
+	//StandComida2.LoadModel("Models/luminaria1.obj");
+	//StandComida3 = Model();
+	//StandComida3.LoadModel("Models/luminaria2.obj");
+
+	//objetosComida.push_back(StandComida1);
+	//objetosComida.push_back(StandComida2);
+	//objetosComida.push_back(StandComida3);
+
 
 	std::vector<std::string> skyboxFaces;
 
@@ -601,85 +622,10 @@ int main()
 		model = glm::mat4(1.0);
 		bolos(model, uniformModel, objetosBolos, tierraTexture, meshList);
 
-		//Área de comida
+		//Caminos y área de comida
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-210.0f, -0.8f, 0.0f));
-		model = glm::scale(model, glm::vec3(80.0f, 0.05f, 220.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		//Caminos
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(180.0f, -0.8f, 0.0f));
-		model = glm::scale(model, glm::vec3(20.0f, 0.05f, 150.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(225.0f, -0.8f, 0.0f));
-		model = glm::scale(model, glm::vec3(70.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(115.0f, -0.8f, -140.0f));
-		model = glm::scale(model, glm::vec3(50.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(115.0f, -0.8f, 140.0f));
-		model = glm::scale(model, glm::vec3(50.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-15.0f, -0.8f, -140.0f));
-		model = glm::scale(model, glm::vec3(50.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-15.0f, -0.8f, 140.0f));
-		model = glm::scale(model, glm::vec3(50.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-170.0f, -0.8f, -140.0f));
-		model = glm::scale(model, glm::vec3(100.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-170.0f, -0.8f, 140.0f));
-		model = glm::scale(model, glm::vec3(100.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-210.0f, -0.8f, -120.0f));
-		model = glm::scale(model, glm::vec3(20.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-210.0f, -0.8f, 120.0f));
-		model = glm::scale(model, glm::vec3(20.0f, 0.05f, 20.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tierraTexture.UseTexture();
-		meshList[4]->RenderMesh();
-
+		//comida(model, uniformModel, objetosComida, tierraTexture, meshList);
+		
 		glUseProgram(0);
 
 		mainWindow.swapBuffers();
