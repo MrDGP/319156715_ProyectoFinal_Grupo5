@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
-# File Created: 19.04.2025 14:06:44
+# File Created: 19.04.2025 13:26:52
 
-mtllib StandHacha.mtl
+mtllib StandDados.mtl
 
 #
 # object FrontonD
@@ -435,10 +435,10 @@ vn -0.5774 -0.5774 0.5774
 vn -0.5774 0.5774 0.5774
 # 8 vertex normals
 
-vt 0.8602 0.7132 0.0000
-vt 0.1612 0.7133 0.0000
-vt 0.1600 0.6019 0.0000
-vt 0.8591 0.6018 0.0000
+vt 0.8592 0.8584 0.0000
+vt 0.1602 0.8585 0.0000
+vt 0.1590 0.7471 0.0000
+vt 0.8581 0.7470 0.0000
 # 4 texture coords
 
 o Rotulo
