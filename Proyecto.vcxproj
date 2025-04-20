@@ -134,10 +134,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ambientacion.h" />
+    <ClInclude Include="Bateo.h" />
+    <ClInclude Include="Bolos.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CommonValues.h" />
+    <ClInclude Include="Dados.h" />
+    <ClInclude Include="Dardos.h" />
     <ClInclude Include="definition.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Hacha.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -149,12 +154,18 @@
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Topos.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ambientacion.cpp" />
+    <ClCompile Include="Bateo.cpp" />
+    <ClCompile Include="Bolos.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Dados.cpp" />
+    <ClCompile Include="Dardos.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Hacha.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -166,6 +177,7 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Topos.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
