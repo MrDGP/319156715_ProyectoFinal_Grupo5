@@ -37,6 +37,9 @@
 #include "Ambientacion.h"
 #include "Comida.h"
 
+//Modelos NPCs
+#include "NPCs.h"
+
 //Juegos
 #include "Dados.h"
 #include "Bateo.h"
@@ -62,6 +65,7 @@ std::vector<Model> objetosDardos;
 std::vector<Model> objetosHacha;
 std::vector<Model> objetosTopos;
 std::vector<Model> objetosComida;
+std::vector<Model> personajesNPCs;
 
 
 //camaras realizadas 
@@ -125,9 +129,20 @@ Model arbol3;
 Model bote1;
 Model bote2;
 
+//Modelos NPCs
+Model woodstock;
+Model peppermint;
+Model charlie;
+Model carrie;
+Model teri;
+Model bowser;
+Model kingBoo;
+Model donkeyKong;
+Model wario;
+
 Skybox skybox;
 
-//materiales
+//Materiales
 Material Material_brillante;
 Material Material_opaco;
 
@@ -506,6 +521,39 @@ int main()
 	//objetosComida.push_back(StandComida2);
 	//objetosComida.push_back(StandComida3);
 
+	//Modelos NPCs
+	woodstock = Model();
+	woodstock.LoadModel("Models/Woodstock.obj");
+	peppermint = Model();
+	peppermint.LoadModel("Models/Peppermint.obj");
+	charlie = Model();
+	charlie.LoadModel("Models/Charlie.obj");
+
+	////Gumball
+	//carrie = Model();
+	//carrie.LoadModel("Models/Woodstock.obj");
+	//teri = Model();
+	//teri.LoadModel("Models/Peppermint.obj");
+
+	////Mario
+	//bowser = Model();
+	//bowser.LoadModel("Models/Charlie.obj");
+	//kingBoo = Model();
+	//kingBoo.LoadModel("Models/Charlie.obj");
+	//donkeyKong = Model();
+	//donkeyKong.LoadModel("Models/Charlie.obj");
+	//wario = Model();
+	//wario.LoadModel("Models/Charlie.obj");
+
+	personajesNPCs.push_back(woodstock);
+	personajesNPCs.push_back(peppermint);
+	personajesNPCs.push_back(charlie);
+	personajesNPCs.push_back(carrie);
+	personajesNPCs.push_back(teri);
+	personajesNPCs.push_back(bowser);
+	personajesNPCs.push_back(kingBoo);
+	personajesNPCs.push_back(donkeyKong);
+	personajesNPCs.push_back(wario);
 
 	std::vector<std::string> skyboxFaces;
 
@@ -697,6 +745,8 @@ int main()
 		//Modelos ambientación
 		ambientacion(model, uniformModel, objetosAmbientacion);
 
+		//Modelos NPCs
+		NPCs(model, uniformModel, personajesNPCs);
 
 		//Personajes  (Para utilizar un personaje distinto comenta el personaje actual y descomenta el que quieras usar)
 		
