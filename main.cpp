@@ -84,6 +84,12 @@ Model Stand4;
 Model Stand5;
 Model Stand6;
 
+//Lanzamiento de dardos
+Model baseDardos;
+Model globoDardos;
+Model tablaDardos;
+Model dardo;
+
 //modelos puesto boliche
 Model bolo;
 Model bolaBoliche;
@@ -378,25 +384,35 @@ int main()
 	Stand5.LoadModel("Models/StandBolos.obj");
 	Stand6 = Model();
 	Stand6.LoadModel("Models/StandTopos.obj");
+	
+	//Dardos
+	objetosDardos.push_back(Stand4);
+	baseDardos = Model();
+	baseDardos.LoadModel("Models/BaseDardos.obj");
+	objetosDardos.push_back(baseDardos);
+	globoDardos = Model();
+	globoDardos.LoadModel("Models/GloboDardos.obj");
+	objetosDardos.push_back(globoDardos);
+	tablaDardos = Model();
+	tablaDardos.LoadModel("Models/TablaDardos.obj");
+	objetosDardos.push_back(tablaDardos);
+	dardo = Model();
+	dardo.LoadModel("Models/Dardo.obj");
+	objetosDardos.push_back(dardo);
 
 	//MODELOS PUESTO DE BOLICHE
-	
 	//bolo prueba 
 	bolo = Model();
 	bolo.LoadModel("Models/bolo.obj");
-
 	//bola de boliche
 	bolaBoliche = Model();
 	bolaBoliche.LoadModel("Models/bolaBoliche.obj");
-
 	//mesa de boliche
 	mesaBoliche = Model();
 	mesaBoliche.LoadModel("Models/mesaBoliche.obj");
-
 	//cartel boliche
 	cartelBoliche = Model();
 	cartelBoliche.LoadModel("Models/cartelBoliche.obj");
-
 	//estante de premios
 	estantePremios = Model();
 	estantePremios.LoadModel("Models/estantePremios.obj");
@@ -404,20 +420,16 @@ int main()
 	//MODELOS PUESTO DE BATEO
 	bardaBateo = Model();
 	bardaBateo.LoadModel("Models/bardaBateo.obj");
-
 	objetivoBateo = Model();
 	objetivoBateo.LoadModel("Models/objetivoBateo.obj");
-
 	cartelBateo = Model();
 	cartelBateo.LoadModel("Models/cartelBateo.obj");
-
 	bate = Model();
 	bate.LoadModel("Models/bate.obj");
 
 	
 
 	objetosHacha.push_back(Stand);
-	
 	objetosBateo.push_back(Stand2);
 	objetosBateo.push_back(bardaBateo);
 	objetosBateo.push_back(objetivoBateo);
@@ -425,7 +437,6 @@ int main()
 	objetosBateo.push_back(bate);
 	
 	objetosDados.push_back(Stand3);
-	objetosDardos.push_back(Stand4);
 	
 	objetosBolos.push_back(Stand5);
 	objetosBolos.push_back(bolo);
@@ -716,7 +727,7 @@ int main()
 
 
 		//Dados
-		 model = glm::mat4(1.0);
+		model = glm::mat4(1.0);
 		dados(model, uniformModel, objetosDados, tierraTexture, meshList);
 
 		//Lanzamiento de hacha
