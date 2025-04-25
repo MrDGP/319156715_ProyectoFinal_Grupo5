@@ -13,6 +13,5 @@
 #include "Texture.h"
 #include"Model.h"
 
-void topos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosTopos);
-
-void renderStand6(glm::mat4 model, GLuint uniformModel, Model& stand, glm::vec3 posicion);
+void tierra(glm::mat4 model, GLuint uniformModel, Texture& tierra, std::vector<Mesh*> meshList);
+void renderTierra(glm::mat4 model, GLuint uniformModel, Texture& tierra, Mesh& piso, glm::vec3 posicion, glm::vec3 escala);

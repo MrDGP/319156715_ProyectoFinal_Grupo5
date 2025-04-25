@@ -13,5 +13,5 @@
 #include "Texture.h"
 #include"Model.h"
 
-void dardos(glm::mat4 model, GLuint uniformModel, std::vector<Model> objetosDardos, Texture& tierra, std::vector<Mesh*> meshList);
-void renderStand4(glm::mat4 model, GLuint uniformModel, Model stand, Model base, Model globo, Model tabla, Model dardo, glm::vec3 posicion, Texture& tierra, std::vector<Mesh*> lista);
+void dardos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosDardos);
+void renderStand4(glm::mat4 model, GLuint uniformModel, Model& stand, Model& base, Model& globo, Model& tabla, Model& dardo, glm::vec3 posicion);

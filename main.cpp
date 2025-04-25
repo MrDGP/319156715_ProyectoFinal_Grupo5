@@ -1,6 +1,4 @@
-
 #define STB_IMAGE_IMPLEMENTATION
-
 
 #include <stdio.h>
 #include <string.h>
@@ -25,100 +23,98 @@
 #include "Sphere.h"
 #include"Model.h"
 #include "Skybox.h"
+#include "Tierra.h"
 
-//para iluminación
+//Para iluminación
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "Material.h"
 
-//Modelos ambientación
-#include "Ambientacion.h"
-#include "Comida.h"
-
-//Modelos NPCs
-#include "NPCs.h"
-
-//Juegos
-#include "Dados.h"
-#include "Bateo.h"
-#include "Bolos.h"
-#include "Dardos.h"
+//Archivos Juegos
 #include "Hacha.h"
+#include "Bateo.h"
+#include "Dados.h"
+#include "Dardos.h"
+#include "Bolos.h"
 #include "Topos.h"
 
+//Archivo Ambientación
+#include "Ambientacion.h"
+
+//Archivo Comida
+#include "Comida.h"
+
+//Archivo NPCs
+#include "NPCs.h"
+
 const float toRadians = 3.14159265f / 180.0f;
-//variables para el ciclo de dia y de noche
+
+//Variables para el ciclo de dia y de noche
 bool esDeDia = true;
-float intensidad = 0.5f;  // inicia de día
-float velocidad = 0.00005f; // velocidad de cambio de luz
+float intensidad = 0.5f;  //Inicia de día
+float velocidad = 0.00005f; //Velocidad de cambio de luz
 
 Window mainWindow;
+
+//Listas
 std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
-std::vector<Model> objetosAmbientacion;
-std::vector<Model> objetosDados;
-std::vector<Model> objetosBateo;
-std::vector<Model> objetosBolos;
-std::vector<Model> objetosDardos;
-std::vector<Model> objetosHacha;
-std::vector<Model> objetosTopos;
-std::vector<Model> objetosComida;
-std::vector<Model> personajesNPCs;
+std::vector<Model*> objetosAmbientacion;
+std::vector<Model*> objetosDados;
+std::vector<Model*> objetosBateo;
+std::vector<Model*> objetosBolos;
+std::vector<Model*> objetosDardos;
+std::vector<Model*> objetosHacha;
+std::vector<Model*> objetosTopos;
+std::vector<Model*> objetosComida;
+std::vector<Model*> personajesNPCs;
 
-
-//camaras realizadas 
+//Camaras 
 Camera camera;
 Camera aerialCamera;
 Camera terceraPersonaCamera;
 Camera camaraPuestos;
 
+//Texturas
 Texture brickTexture;
 Texture dirtTexture;
 Texture plainTexture;
 Texture pisoTexture;
 Texture tierraTexture;
 
-//Modelo puestos
-Model Stand;
+//Variables para modelos del puesto de lanzamiento de hacha
+Model Stand1;
+
+//Variables para modelos del puesto de jaula de bateo
 Model Stand2;
-Model Stand3;
-Model Stand4;
-Model Stand5;
-Model Stand6;
-
-//Lanzamiento de dardos
-Model baseDardos;
-Model globoDardos;
-Model tablaDardos;
-Model dardo;
-
-//modelos puesto boliche
-Model bolo;
-Model bolaBoliche;
-Model mesaBoliche;
-Model cartelBoliche;
-Model estantePremios;
-Model plantaDecorativa;
-
-//modelos puesto de bateo
 Model bardaBateo;
 Model objetivoBateo;
 Model cartelBateo;
 Model bate;
 
-////Modelo puestos comida
-//Model StandComida1;
-//Model StandComida2;
-//Model StandComida3;
+//Variables para modelos del puesto de lanzamiento de dados
+Model Stand3;
 
-//modelos de personajes 
-Model gumball;
-Model yoshi;
-Model snoopy;
+//Variables para modelos del puesto de lanzamiento de dardos
+Model Stand4;
+Model baseDardos;
+Model globoDardos;
+Model tablaDardos;
+Model dardo;
 
-//Modelos ambientación
+//Variables para modelos del puesto de bolos
+Model Stand5;
+Model bolo;
+Model bolaBoliche;
+Model mesaBoliche;
+Model cartelBoliche;
+
+//Variables para modelos del puesto de golpea al topo
+Model Stand6;
+
+//Variables para modelos del ambientación
 Model banca;
 Model luminaria1;
 Model luminaria2;
@@ -128,8 +124,15 @@ Model arbol2;
 Model arbol3;
 Model bote1;
 Model bote2;
+Model plantaDecorativa;
+Model estantePremios;
 
-//Modelos NPCs
+//Variables para modelos del puestos comida
+Model palomitas;
+Model helados;
+Model algodones;
+
+//Variables para modelos de NPCs
 Model woodstock;
 Model peppermint;
 Model charlie;
@@ -140,6 +143,12 @@ Model kingBoo;
 Model donkeyKong;
 Model wario;
 
+//Variables para modelos de personajes principales
+Model gumball;
+Model yoshi;
+Model snoopy;
+
+//Skybox
 Skybox skybox;
 
 //Materiales
@@ -151,21 +160,20 @@ GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
 static double limitFPS = 1.0 / 60.0;
 
-// luz direccional
+//Luz direccional
 DirectionalLight mainLight;
 //para declarar varias luces de tipo pointlight
 
 PointLight pointLights[MAX_POINT_LIGHTS];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
 
-// Vertex Shader
+//Vertex Shader
 static const char* vShader = "shaders/shader_light.vert";
 
-// Fragment Shader
+//Fragment Shader
 static const char* fShader = "shaders/shader_light.frag";
 
-
-//función de calculo de normales por promedio de vértices 
+//Función de calculo de normales por promedio de vértices 
 void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
 	unsigned int vLength, unsigned int normalOffset)
 {
@@ -240,8 +248,6 @@ void CreateObjects()
 		0.0f, -0.5f, 0.5f,		1.0f, 0.0f,		0.0f, 0.0f, 0.0f,
 		0.0f, 0.5f, 0.5f,		1.0f, 1.0f,		0.0f, 0.0f, 0.0f,
 		0.0f, 0.5f, -0.5f,		0.0f, 1.0f,		0.0f, 0.0f, 0.0f,
-
-
 	};
 
 	Mesh* obj1 = new Mesh();
@@ -331,7 +337,6 @@ void CrearDado()
 		 0.5f,  0.5f,  0.5f,	1.0f,	0.0f,		0.0f,	-1.0f,	0.0f,
 		  0.5f, 0.5f,  -0.5f,	1.0f,	1.0f,		0.0f,	-1.0f,	0.0f,
 		 -0.5f, 0.5f,  -0.5f,	0.0f,	1.0f,		0.0f,	-1.0f,	0.0f,
-
 	};
 
 	Mesh* dado = new Mesh();
@@ -355,23 +360,23 @@ int main()
 	CrearDado();
 	CreateShaders();
 
-	//camara libre
+	//Camara libre
 	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.3f, 0.5f);
 
 
-	aerialCamera = Camera(glm::vec3(0.0f, 450.0f, 0.0f),  // posición muy arriba
-		glm::vec3(0.0f, 1.0f, 0.0f),    // vector Up
-		-90.0f,                        // yaw
-		-89.9f,                        // pitch casi vertical (evita ser -90 exacto)
-		0.0f, 0.0f);                   // sin movimiento o rotación
+	aerialCamera = Camera(glm::vec3(0.0f, 450.0f, 0.0f),  //Posición muy arriba
+		glm::vec3(0.0f, 1.0f, 0.0f),                      //Vector Up
+		-90.0f,                                           //Yaw
+		-89.9f,                                           //Pitch casi vertical (evita ser -90 exacto)
+		0.0f, 0.0f);                                      //Sin movimiento o rotación
 
-	//Tercera persona (siguiendo coche desde atrás)
-	terceraPersonaCamera = Camera(glm::vec3(2.0f, 2.0f, 0.5f),  // posición detrás del coche
+	//Cámara tercera persona
+	terceraPersonaCamera = Camera(glm::vec3(2.0f, 2.0f, 0.5f),  //Posición detrás del coche
 		glm::vec3(0.0f, 1.0f, 0.0f),
-		180.0f, 0.0f, 0.3f, 0.5f);  // sin movimiento
+		180.0f, 0.0f, 0.3f, 0.5f);                              //Sin movimiento
 
-	// Cámara Para posicionar en los puestos
-	camaraPuestos = Camera(glm::vec3(-80.0f, 20.0f, -40.0f),  //frente a un puesto
+	//Cámara para puestos
+	camaraPuestos = Camera(glm::vec3(-80.0f, 20.0f, -40.0f),   //Frente a un puesto
 		glm::vec3(0.0f, 1.0f, 0.0f),
 		270.0f, 0.0f, 0.0f, 0.0f);
 
@@ -385,54 +390,14 @@ int main()
 	pisoTexture.LoadTextureA();
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
-  
-	//Modelos puestos
-	Stand = Model();
-	Stand.LoadModel("Models/StandHacha.obj");
+
+	//Carga de modelos del puesto de lanzamiento de hacha
+	Stand1 = Model();
+	Stand1.LoadModel("Models/StandHacha.obj");
+
+	//Carga de modelos del puesto de jaula de bateo
 	Stand2 = Model();
 	Stand2.LoadModel("Models/StandBateo.obj");
-	Stand3 = Model();
-	Stand3.LoadModel("Models/StandDados.obj");
-	Stand4 = Model();
-	Stand4.LoadModel("Models/StandDardos.obj");
-	Stand5 = Model();
-	Stand5.LoadModel("Models/StandBolos.obj");
-	Stand6 = Model();
-	Stand6.LoadModel("Models/StandTopos.obj");
-	
-	//Dardos
-	objetosDardos.push_back(Stand4);
-	baseDardos = Model();
-	baseDardos.LoadModel("Models/BaseDardos.obj");
-	objetosDardos.push_back(baseDardos);
-	globoDardos = Model();
-	globoDardos.LoadModel("Models/GloboDardos.obj");
-	objetosDardos.push_back(globoDardos);
-	tablaDardos = Model();
-	tablaDardos.LoadModel("Models/TablaDardos.obj");
-	objetosDardos.push_back(tablaDardos);
-	dardo = Model();
-	dardo.LoadModel("Models/Dardo.obj");
-	objetosDardos.push_back(dardo);
-
-	//MODELOS PUESTO DE BOLICHE
-	//bolo prueba 
-	bolo = Model();
-	bolo.LoadModel("Models/bolo.obj");
-	//bola de boliche
-	bolaBoliche = Model();
-	bolaBoliche.LoadModel("Models/bolaBoliche.obj");
-	//mesa de boliche
-	mesaBoliche = Model();
-	mesaBoliche.LoadModel("Models/mesaBoliche.obj");
-	//cartel boliche
-	cartelBoliche = Model();
-	cartelBoliche.LoadModel("Models/cartelBoliche.obj");
-	//estante de premios
-	estantePremios = Model();
-	estantePremios.LoadModel("Models/estantePremios.obj");
-
-	//MODELOS PUESTO DE BATEO
 	bardaBateo = Model();
 	bardaBateo.LoadModel("Models/bardaBateo.obj");
 	objetivoBateo = Model();
@@ -442,26 +407,39 @@ int main()
 	bate = Model();
 	bate.LoadModel("Models/bate.obj");
 
-	
+	//Carga de modelos del puesto de dados
+	Stand3 = Model();
+	Stand3.LoadModel("Models/StandDados.obj");
 
-	objetosHacha.push_back(Stand);
-	objetosBateo.push_back(Stand2);
-	objetosBateo.push_back(bardaBateo);
-	objetosBateo.push_back(objetivoBateo);
-	objetosBateo.push_back(cartelBateo);
-	objetosBateo.push_back(bate);
-	
-	objetosDados.push_back(Stand3);
-	
-	objetosBolos.push_back(Stand5);
-	objetosBolos.push_back(bolo);
-	objetosBolos.push_back(bolaBoliche);
-	objetosBolos.push_back(cartelBoliche);
-	objetosBolos.push_back(estantePremios);
-	
-	objetosTopos.push_back(Stand6);
+	//Carga de modelos del puesto de dardos
+	Stand4 = Model();
+	Stand4.LoadModel("Models/StandDardos.obj");
+	baseDardos = Model();
+	baseDardos.LoadModel("Models/BaseDardos.obj");
+	globoDardos = Model();
+	globoDardos.LoadModel("Models/GloboDardos.obj");
+	tablaDardos = Model();
+	tablaDardos.LoadModel("Models/TablaDardos.obj");
+	dardo = Model();
+	dardo.LoadModel("Models/Dardo.obj");
 
-	//Modelos ambientación
+	//Carga de modelos del puesto de bolos
+	Stand5 = Model();
+	Stand5.LoadModel("Models/StandBolos.obj");
+	bolo = Model();
+	bolo.LoadModel("Models/bolo.obj");
+	bolaBoliche = Model();
+	bolaBoliche.LoadModel("Models/bolaBoliche.obj");
+	cartelBoliche = Model();
+	cartelBoliche.LoadModel("Models/cartelBoliche.obj");
+	mesaBoliche = Model();
+	mesaBoliche.LoadModel("Models/mesaBoliche.obj");
+
+	//Carga de modelos del puesto de golpea al topo
+	Stand6 = Model();
+	Stand6.LoadModel("Models/StandTopos.obj");
+
+	//Carga de modelos de ambientación
 	banca = Model();
 	banca.LoadModel("Models/banca.obj");
 	luminaria1 = Model();
@@ -482,46 +460,18 @@ int main()
 	bote2.LoadModel("Models/bote2.obj");
 	plantaDecorativa = Model();
 	plantaDecorativa.LoadModel("Models/plantaDecorativa.obj");
+	estantePremios = Model();
+	estantePremios.LoadModel("Models/estantePremios.obj");
 
-	//Modelos de personajes
+	//Carga de modelos de comida
+	palomitas = Model();
+	palomitas.LoadModel("Models/palomitas.obj");
+	helados = Model();
+	helados.LoadModel("Models/helados.obj");
+	algodones = Model();
+	algodones.LoadModel("Models/algodones.obj");
 	
-	//gumball
-	gumball = Model();
-	gumball.LoadModel("Models/gumball.obj");
-	//yoshi
-	yoshi = Model();
-	yoshi.LoadModel("Models/yoshi.obj");
-
-	//snoopy
-	snoopy = Model();
-	snoopy.LoadModel("Models/snoopy.obj");
-
-	
-	objetosAmbientacion.push_back(banca);
-	objetosAmbientacion.push_back(luminaria1);
-	objetosAmbientacion.push_back(luminaria2);
-	objetosAmbientacion.push_back(luminaria3);
-	objetosAmbientacion.push_back(arbol1);
-	objetosAmbientacion.push_back(arbol2);
-	objetosAmbientacion.push_back(arbol3);
-	objetosAmbientacion.push_back(bote1);
-	objetosAmbientacion.push_back(bote2);
-	objetosAmbientacion.push_back(plantaDecorativa);
-
-
-	////Modelos comida
-	//StandComida1 = Model();
-	//StandComida1.LoadModel("Models/banca.obj");
-	//StandComida2 = Model();
-	//StandComida2.LoadModel("Models/luminaria1.obj");
-	//StandComida3 = Model();
-	//StandComida3.LoadModel("Models/luminaria2.obj");
-
-	//objetosComida.push_back(StandComida1);
-	//objetosComida.push_back(StandComida2);
-	//objetosComida.push_back(StandComida3);
-
-	//Modelos NPCs
+	//Carga de modelos de NPCs
 	woodstock = Model();
 	woodstock.LoadModel("Models/Woodstock.obj");
 	peppermint = Model();
@@ -529,32 +479,68 @@ int main()
 	charlie = Model();
 	charlie.LoadModel("Models/Charlie.obj");
 
-	////Gumball
-	//carrie = Model();
-	//carrie.LoadModel("Models/Woodstock.obj");
-	//teri = Model();
-	//teri.LoadModel("Models/Peppermint.obj");
+	//Carga de modelos de los personajes principales
+	gumball = Model();
+	gumball.LoadModel("Models/gumball.obj");
+	yoshi = Model();
+	yoshi.LoadModel("Models/yoshi.obj");
+	snoopy = Model();
+	snoopy.LoadModel("Models/snoopy.obj");
 
-	////Mario
-	//bowser = Model();
-	//bowser.LoadModel("Models/Charlie.obj");
-	//kingBoo = Model();
-	//kingBoo.LoadModel("Models/Charlie.obj");
-	//donkeyKong = Model();
-	//donkeyKong.LoadModel("Models/Charlie.obj");
-	//wario = Model();
-	//wario.LoadModel("Models/Charlie.obj");
+	//push_back de modelos del puesto de lanzamiento de hacha
+	objetosHacha.push_back(&Stand1);
 
-	personajesNPCs.push_back(woodstock);
-	personajesNPCs.push_back(peppermint);
-	personajesNPCs.push_back(charlie);
-	personajesNPCs.push_back(carrie);
-	personajesNPCs.push_back(teri);
-	personajesNPCs.push_back(bowser);
-	personajesNPCs.push_back(kingBoo);
-	personajesNPCs.push_back(donkeyKong);
-	personajesNPCs.push_back(wario);
+	//push_back de modelos del puesto de jaula de bateo
+	objetosBateo.push_back(&Stand2);
+	objetosBateo.push_back(&bardaBateo);
+	objetosBateo.push_back(&objetivoBateo);
+	objetosBateo.push_back(&cartelBateo);
+	objetosBateo.push_back(&bate);
 
+	//push_back de modelos del puesto de dados
+	objetosDados.push_back(&Stand3);
+
+	//push_back de modelos del puesto de dardos
+	objetosDardos.push_back(&Stand4);
+	objetosDardos.push_back(&baseDardos);
+	objetosDardos.push_back(&globoDardos);
+	objetosDardos.push_back(&tablaDardos);
+	objetosDardos.push_back(&dardo);
+
+	//push_back de modelos del puesto de bolos
+	objetosBolos.push_back(&Stand5);
+	objetosBolos.push_back(&bolo);
+	objetosBolos.push_back(&bolaBoliche);
+	objetosBolos.push_back(&cartelBoliche);
+	objetosBolos.push_back(&mesaBoliche);
+
+	//push_back de modelos del puesto de golpea al topo
+	objetosTopos.push_back(&Stand6);
+
+	//push_back de modelos de comida
+	objetosComida.push_back(&palomitas);
+	objetosComida.push_back(&helados);
+	objetosComida.push_back(&algodones);
+
+	//push_back de modelos de NPCs
+	personajesNPCs.push_back(&woodstock);
+	personajesNPCs.push_back(&peppermint);
+	personajesNPCs.push_back(&charlie);
+
+	//push_back de modelos de ambientación
+	objetosAmbientacion.push_back(&banca);
+	objetosAmbientacion.push_back(&luminaria1);
+	objetosAmbientacion.push_back(&luminaria2);
+	objetosAmbientacion.push_back(&luminaria3);
+	objetosAmbientacion.push_back(&arbol1);
+	objetosAmbientacion.push_back(&arbol2);
+	objetosAmbientacion.push_back(&arbol3);
+	objetosAmbientacion.push_back(&bote1);
+	objetosAmbientacion.push_back(&bote2);
+	objetosAmbientacion.push_back(&plantaDecorativa);
+	objetosAmbientacion.push_back(&estantePremios);
+
+	//Skybox
 	std::vector<std::string> skyboxFaces;
 
 	skyboxFaces.push_back("Textures/Skybox/right.tga");
@@ -569,15 +555,13 @@ int main()
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
-	//luz direccional, sólo 1 y siempre debe de existir 
-	// Para la luz del sol
+	//Luz direccional, sólo 1 y siempre debe de existir 
+	//Para la luz del sol
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
 		0.3f, 0.3f,
 		0.0f, 0.0f, -1.0f);
-	//contador de luces puntuales
-	unsigned int pointLightCount = 0;
+	unsigned int pointLightCount = 0;  //Contador de luces puntuales
 
-	//Declaración de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
 		1.0f, 1.0f,
 		5.0f, 3.0f, -4.0f,
@@ -604,15 +588,13 @@ int main()
 	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 	glm::vec3 posicionModelo = glm::vec3(-90.0f, -1.0f, 0.0f); // posición inicial de Modelos
 
-	////Loop mientras no se cierra la ventana
+	//Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
-
-
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -632,13 +614,13 @@ int main()
 			break;
 
 		case 2: {
-			// Dirección que apunta la cámara (sin componente Y)
+			//Dirección que apunta la cámara (sin componente Y)
 			glm::vec3 forward = glm::normalize(glm::vec3(terceraPersonaCamera.getCameraDirection().x, 0.0f, terceraPersonaCamera.getCameraDirection().z));
 
-			// Offset detrás y arriba del modelo
+			//Offset detrás y arriba del modelo
 			glm::vec3 camOffset = -forward * 23.0f + glm::vec3(0.0f, 10.5f, 0.0f);
 
-			// Posición de la cámara = posición del modelo + offset
+			//Posición de la cámara = posición del modelo + offset
 			glm::vec3 camPos = posicionModelo + camOffset;
 
 			terceraPersonaCamera.setPosition(camPos);
@@ -649,7 +631,7 @@ int main()
 			activeCamera = &camaraPuestos;
 			break;
 		default:
-			activeCamera = &camera; // Fallback a cámara libre
+			activeCamera = &camera; //Fallback a cámara libre
 			break;
 		}
 
@@ -664,20 +646,19 @@ int main()
 			terceraPersonaCamera.mouseControl(xChange, yChange);
 			glm::vec3 forward = glm::normalize(glm::vec3(terceraPersonaCamera.getCameraDirection().x, 0.0f, terceraPersonaCamera.getCameraDirection().z));
 			glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
-
-				if (mainWindow.getsKeys()[GLFW_KEY_W])
-					posicionModelo += forward * deltaTime * 1.5f;
-				if (mainWindow.getsKeys()[GLFW_KEY_S])
-					posicionModelo -= forward * deltaTime * 1.5f;
-				if (mainWindow.getsKeys()[GLFW_KEY_A])
-					posicionModelo -= right * deltaTime * 1.5f;
-				if (mainWindow.getsKeys()[GLFW_KEY_D])
-					posicionModelo += right * deltaTime * 1.5f;
+			if (mainWindow.getsKeys()[GLFW_KEY_W])
+				posicionModelo += forward * deltaTime * 1.5f;
+			if (mainWindow.getsKeys()[GLFW_KEY_S])
+				posicionModelo -= forward * deltaTime * 1.5f;
+			if (mainWindow.getsKeys()[GLFW_KEY_A])
+				posicionModelo -= right * deltaTime * 1.5f;
+			if (mainWindow.getsKeys()[GLFW_KEY_D])
+				posicionModelo += right * deltaTime * 1.5f;
 			break;
 		case 3: camaraPuestos.mouseControl(xChange, yChange); break;
 		}
 
-		// Clear the window
+		//Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
@@ -688,7 +669,7 @@ int main()
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
 
-		//información en el shader de intensidad especular y brillo
+		//Información en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
@@ -698,7 +679,6 @@ int main()
 			activeCamera->getCameraPosition().x,
 			activeCamera->getCameraPosition().y,
 			activeCamera->getCameraPosition().z);
-
 
 		// luz ligada a la cámara de tipo flash
 		//sirve para que en tiempo de ejecución (dentro del while) se cambien propiedades de la luz
@@ -710,46 +690,69 @@ int main()
 		// shaderList[0].SetSpotLights(spotLights, spotLightCount);
 		// shaderList[0].SetPointLights(pointLights1, pointLightCount1);
 
-		//Bloque para ciclo de dia y de noche 
+		//Bloque para ciclo de día y de noche 
 		if (esDeDia) {
 			intensidad -= velocidad;
 			if (intensidad <= 0.01f) {
-				intensidad = 0.01f; // mínimo de noche
+				intensidad = 0.01f;  //Mínimo de noche
 				esDeDia = false;
 			}
 		}
 		else {
 			intensidad += velocidad;
 			if (intensidad >= 0.9f) {
-				intensidad = 0.9f; // máximo de día
+				intensidad = 0.9f;  //Máximo de día
 				esDeDia = true;
 			}
 		}
-		mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,  // color
-			intensidad * 0.3f,  // intensidad ambiental (más baja)
-			intensidad,         // intensidad difusa (más fuerte)
-			0.0f, -1.0f, 0.0f); // dirección
-
+		mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,  //Color
+			intensidad * 0.3f,  //Intensidad ambiental (más baja)
+			intensidad,  // Intensidad difusa (más fuerte)
+			0.0f, -1.0f, 0.0f);  //Dirección
 		shaderList[0].SetDirectionalLight(&mainLight);
 
+		//Piso
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(30.0f, 1.0f, 30.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-
 		pisoTexture.UseTexture();
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		//Modelos ambientación
+		//Tierra
+		tierra(model, uniformModel, tierraTexture, meshList);
+
+		//Redenrizado del puesto de lanzamiento de hacha
+		hacha(model, uniformModel, objetosHacha);
+
+		//Redenrizado del puesto de jaula de bateo
+		bateo(model, uniformModel, objetosBateo);
+
+		//Redenrizado del puesto de dados
+		dados(model, uniformModel, objetosDados);
+
+		//Redenrizado del puesto de dardos
+		dardos(model, uniformModel, objetosDardos);
+
+		////Redenrizado del puesto de bolos
+		bolos(model, uniformModel, objetosBolos);
+
+		//Redenrizado del puesto de golpea al topo
+		topos(model, uniformModel, objetosTopos);
+		
+		////Redenrizado de ambientación
 		ambientacion(model, uniformModel, objetosAmbientacion);
 
-		//Modelos NPCs
+		//Redenrizado de comida
+		comida(model, uniformModel, objetosComida);
+
+		//Renderizado de NPCs
 		NPCs(model, uniformModel, personajesNPCs);
 
-		//Personajes  (Para utilizar un personaje distinto comenta el personaje actual y descomenta el que quieras usar)
-		
+		//Renderizado de personajes principales  
+		//(Para utilizar un personaje distinto comenta el personaje actual y descomenta el que quieras usar)
 		////gumball
 		//model = glm::mat4(1.0);
 		//model = glm::translate(model, posicionModelo);
@@ -757,7 +760,6 @@ int main()
 		//model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
 		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//gumball.RenderModel();
-		
 		
 		////yoshi
 		//model = glm::mat4(1.0);
@@ -775,43 +777,8 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		snoopy.RenderModel();
 
-
-		//Dados
-		model = glm::mat4(1.0);
-		dados(model, uniformModel, objetosDados, tierraTexture, meshList);
-
-		//Lanzamiento de hacha
-		model = glm::mat4(1.0);
-		hacha(model, uniformModel, objetosHacha, tierraTexture, meshList);
-
-		//Dardos
-		model = glm::mat4(1.0);
-		dardos(model, uniformModel, objetosDardos, tierraTexture, meshList);
-
-		//Golpea al topo
-		model = glm::mat4(1.0);
-		topos(model, uniformModel, objetosTopos, tierraTexture, meshList);
-
-		//Jaula de bateo
-		model = glm::mat4(1.0);
-		bateo(model, uniformModel, objetosBateo, tierraTexture, meshList);
-		renderEstante(model, uniformModel, estantePremios, glm::vec3(-103.0f, 6.0f, -110.0f), 90.0f);
-		renderEstante(model, uniformModel, estantePremios, glm::vec3(-60.0f, 6.0f, -110.0f), 270.0f);
-		
-		//Línea de boliche
-		model = glm::mat4(1.0);
-		bolos(model, uniformModel, objetosBolos, tierraTexture, meshList);
-		renderMesa(model, uniformModel, mesaBoliche, glm::vec3(-78.0f, 0.0f, 166.0f));
-
-
-		//Caminos y área de comida
-		model = glm::mat4(1.0);
-		//comida(model, uniformModel, objetosComida, tierraTexture, meshList);
-		
 		glUseProgram(0);
-
 		mainWindow.swapBuffers();
 	}
-
 	return 0;
 }

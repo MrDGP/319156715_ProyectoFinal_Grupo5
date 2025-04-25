@@ -13,5 +13,4 @@
 #include "Texture.h"
 #include"Model.h"
 
-void comida(glm::mat4 model, GLuint uniformModel, std::vector<Model> objetosComida, Texture& tierra, std::vector<Mesh*> meshList);
-void renderStandsComida(glm::mat4 model, GLuint uniformModel, std::vector<Model> objetosComida, glm::vec3 posicion, Texture& tierra, std::vector<Mesh*> lista);
+void comida(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosComida);

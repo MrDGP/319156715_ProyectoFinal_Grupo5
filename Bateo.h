@@ -13,13 +13,10 @@
 #include "Texture.h"
 #include"Model.h"
 
-void bateo(glm::mat4 model, GLuint uniformModel, std::vector<Model> objetosBateo, Texture &tierra, std::vector<Mesh*> meshList);
-void renderStand2(glm::mat4 model, GLuint uniformModel, Model stand, glm::vec3 posicion, Texture &tierra, std::vector<Mesh*> lista);
+void bateo(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosBateo);
 
-void renderBardas(glm::mat4 model, GLuint uniformModel, Model stand, glm::vec3 posicion);
-
-void renderObjetivoBateo(glm::mat4 model, GLuint uniformModel, Model objetivo, glm::vec3 posicion);
-
-void renderCartelBateo(glm::mat4 model, GLuint uniformModel, Model& cartelBateo, glm::vec3 position);
-
-void renderBats(glm::mat4 model, GLuint uniformModel, Model& bats, glm::vec3 position);
+void renderStand2(glm::mat4 model, GLuint uniformModel, Model& stand, glm::vec3 posicion);
+void renderBardas(glm::mat4 model, GLuint uniformModel, Model& bardaBateo, glm::vec3 posicion);
+void renderObjetivoBateo(glm::mat4 model, GLuint uniformModel, Model& objetivo, glm::vec3 posicion);
+void renderCartelBateo(glm::mat4 model, GLuint uniformModel, Model& cartelBateo, glm::vec3 posicion);
+void renderBats(glm::mat4 model, GLuint uniformModel, Model& bats, glm::vec3 posicion);
