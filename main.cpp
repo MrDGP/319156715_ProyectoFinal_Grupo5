@@ -96,6 +96,14 @@ Model bate;
 
 //Variables para modelos del puesto de lanzamiento de dados
 Model Stand3;
+Model mesaDados;
+Model dadoMario;
+Model hongoRojo;
+Model hongoVerde;
+Model cuadroMario;
+Model cuadroToad;
+Model cuadroBowser;
+Model cuadroWario;
 
 //Variables para modelos del puesto de lanzamiento de dardos
 Model Stand4;
@@ -126,6 +134,7 @@ Model bote1;
 Model bote2;
 Model plantaDecorativa;
 Model estantePremios;
+Model luminariaTecho;
 
 //Variables para modelos del puestos comida
 Model palomitas;
@@ -410,6 +419,22 @@ int main()
 	//Carga de modelos del puesto de dados
 	Stand3 = Model();
 	Stand3.LoadModel("Models/StandDados.obj");
+	mesaDados = Model();
+	mesaDados.LoadModel("Models/mesaDados.obj");
+	dadoMario = Model();
+	dadoMario.LoadModel("Models/dado.obj");
+	hongoRojo = Model();
+	hongoRojo.LoadModel("Models/hongoRojo.obj");
+	hongoVerde = Model();
+	hongoVerde.LoadModel("Models/hongoVerde.obj");
+	cuadroMario = Model();
+	cuadroMario.LoadModel("Models/cuadroMario.obj");
+	cuadroToad = Model();
+	cuadroToad.LoadModel("Models/cuadroToad.obj");
+	cuadroBowser = Model();
+	cuadroBowser.LoadModel("Models/cuadroBowser.obj");
+	cuadroWario = Model();
+	cuadroWario.LoadModel("Models/cuadroWario.obj");
 
 	//Carga de modelos del puesto de dardos
 	Stand4 = Model();
@@ -462,6 +487,8 @@ int main()
 	plantaDecorativa.LoadModel("Models/plantaDecorativa.obj");
 	estantePremios = Model();
 	estantePremios.LoadModel("Models/estantePremios.obj");
+	luminariaTecho = Model();
+	luminariaTecho.LoadModel("Models/luminariaTecho.obj");
 
 	//Carga de modelos de comida
 	palomitas = Model();
@@ -499,6 +526,14 @@ int main()
 
 	//push_back de modelos del puesto de dados
 	objetosDados.push_back(&Stand3);
+	objetosDados.push_back(&mesaDados);
+	objetosDados.push_back(&dadoMario);
+	objetosDados.push_back(&hongoRojo);
+	objetosDados.push_back(&hongoVerde);
+	objetosDados.push_back(&cuadroMario);
+	objetosDados.push_back(&cuadroToad);
+	objetosDados.push_back(&cuadroBowser);
+	objetosDados.push_back(&cuadroWario);
 
 	//push_back de modelos del puesto de dardos
 	objetosDardos.push_back(&Stand4);
@@ -539,6 +574,7 @@ int main()
 	objetosAmbientacion.push_back(&bote2);
 	objetosAmbientacion.push_back(&plantaDecorativa);
 	objetosAmbientacion.push_back(&estantePremios);
+	objetosAmbientacion.push_back(&luminariaTecho);
 
 	//Skybox
 	std::vector<std::string> skyboxFaces;

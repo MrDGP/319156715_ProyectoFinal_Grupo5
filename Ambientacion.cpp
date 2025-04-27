@@ -39,15 +39,38 @@ void ambientacion(glm::mat4 model, GLuint uniformModel, std::vector<Model*> obje
 	renderBote2(model, uniformModel, *objetosAmbientacion[8], glm::vec3(-160.0f, -1.0f, -98.0f), 90);
 
 	//Ambientacion de puestos
+	//Hacha	
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(160.f, 6.0f, 110.0f), 90.0f);
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(202.0f, 6.0f, 110.0f), 270.0f);
+	renderLuminariaTecho(model, uniformModel, *objetosAmbientacion[11], glm::vec3(180.0f, 50.3f, 140.0f));
+
+	//Bateo
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(-102.0f, 6.0f, -110.0f), 90.0f);
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(-60.0f, 6.0f, -110.0f), 270.0f);
+	renderLuminariaTecho(model, uniformModel, *objetosAmbientacion[11], glm::vec3(-80.2f, 50.3f, -140.0f));
+	
+	//Dados
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(157.5f, 6.0f, -110.0f), 90.0f);
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(200.5f, 6.0f, -110.0f), 270.0f);
+	renderLuminariaTecho(model, uniformModel, *objetosAmbientacion[11], glm::vec3(180.0f, 50.3f, -140.0f));
+
+	//Dardos
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(28.0f, 6.0f, -110.0f), 90.0f);
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(70.0f, 6.0f, -110.0f), 270.0f);
+	renderLuminariaTecho(model, uniformModel, *objetosAmbientacion[11], glm::vec3(49.9f, 50.3f, -140.0f));
+
 	//Bolos
 	renderPlantaDecorativa(model, uniformModel, *objetosAmbientacion[9], glm::vec3(-60.0f,-0.5f, 180.0f));
 	renderPlantaDecorativa(model, uniformModel, *objetosAmbientacion[9], glm::vec3(-98.0f, -0.5f, 180.0f));
 	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(-100.0f, 6.0f, 120.0f), 90.0f);
 	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(-58.0f, 6.0f, 120.0f), 270.0f);
+	renderLuminariaTecho(model, uniformModel, *objetosAmbientacion[11], glm::vec3(-80.0f, 50.3f, 140.0f));
 
-	//Bateo
-	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(-103.0f, 6.0f, -110.0f), 90.0f);
-	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(-60.0f, 6.0f, -110.0f), 270.0f);
+	//Topos
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(30.0f, 6.0f, 110.0f), 90.0f);
+	renderEstante(model, uniformModel, *objetosAmbientacion[10], glm::vec3(72.0f, 6.0f, 110.0f), 270.0f);
+	renderLuminariaTecho(model, uniformModel, *objetosAmbientacion[11], glm::vec3(50.0f, 50.3f, 140.0f));
+
 }
 
 void renderBanca(glm::mat4 model, GLuint uniformModel, Model& banca, glm::vec3 posicion, int grados) {
@@ -140,4 +163,12 @@ void renderEstante(glm::mat4 model, GLuint uniformModel, Model& estante, glm::ve
 	model = glm::rotate(model, glm::radians(rotacion), glm::vec3(0.0f, 1.0f, 0.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	estante.RenderModel();
+}
+
+void renderLuminariaTecho(glm::mat4 model, GLuint uniformModel, Model& luminariaTecho, glm::vec3 posicion) {
+	model = glm::mat4(1.0);
+	model = glm::translate(model, posicion);
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	luminariaTecho.RenderModel();
 }
