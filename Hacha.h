@@ -13,7 +13,5 @@
 #include "Texture.h"
 #include"Model.h"
 
-
 void hacha(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosHacha);
-
-void renderStand1(glm::mat4 model, GLuint uniformModel, Model& stand, glm::vec3 posicion);
+void renderStand(glm::mat4 model, GLuint uniformModel, Model &stand, Model &hacha, Model &reja, Model &tabla, Model &objetivo, glm::vec3 posicion);
