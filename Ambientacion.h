@@ -30,4 +30,4 @@ void renderBote2(glm::mat4 model, GLuint uniformModel, Model& bote2, glm::vec3 p
 //Ambientacion de puestos
 void renderPlantaDecorativa(glm::mat4 model, GLuint uniformModel, Model& planta, glm::vec3 posicion);
 void renderEstante(glm::mat4 model, GLuint uniformModel, Model& estante, glm::vec3 position, GLfloat rotacion);
-
+void renderLuminariaTecho(glm::mat4 model, GLuint uniformModel, Model& luminariaTecho, glm::vec3 posicion);
