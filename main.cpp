@@ -86,6 +86,8 @@ Texture tierraTexture;
 
 //Variables para modelos del puesto de lanzamiento de hacha
 Model Stand1;
+Model Hacha;
+Model Reja;
 
 //Variables para modelos del puesto de jaula de bateo
 Model Stand2;
@@ -113,6 +115,9 @@ Model cartelBoliche;
 
 //Variables para modelos del puesto de golpea al topo
 Model Stand6;
+Model MesaTopos;
+Model TuboTopos;
+Model Pirania;
 
 //Variables para modelos del ambientación
 Model banca;
@@ -394,6 +399,10 @@ int main()
 	//Carga de modelos del puesto de lanzamiento de hacha
 	Stand1 = Model();
 	Stand1.LoadModel("Models/StandHacha.obj");
+	Hacha = Model();
+	Hacha.LoadModel("Models/Hacha.obj");
+	Reja = Model();
+	Reja.LoadModel("Models/Reja.obj");
 
 	//Carga de modelos del puesto de jaula de bateo
 	Stand2 = Model();
@@ -438,6 +447,12 @@ int main()
 	//Carga de modelos del puesto de golpea al topo
 	Stand6 = Model();
 	Stand6.LoadModel("Models/StandTopos.obj");
+	MesaTopos = Model();
+	MesaTopos.LoadModel("Models/MesaTopos.obj");
+	TuboTopos = Model();
+	TuboTopos.LoadModel("Models/TuboTopos.obj");
+	Pirania = Model();
+	Pirania.LoadModel("Models/Pirania.obj");
 
 	//Carga de modelos de ambientación
 	banca = Model();
@@ -489,6 +504,10 @@ int main()
 
 	//push_back de modelos del puesto de lanzamiento de hacha
 	objetosHacha.push_back(&Stand1);
+	objetosHacha.push_back(&Hacha);
+	objetosHacha.push_back(&Reja);
+	objetosHacha.push_back(&tablaDardos);
+	objetosHacha.push_back(&objetivoBateo);
 
 	//push_back de modelos del puesto de jaula de bateo
 	objetosBateo.push_back(&Stand2);
@@ -516,6 +535,9 @@ int main()
 
 	//push_back de modelos del puesto de golpea al topo
 	objetosTopos.push_back(&Stand6);
+	objetosTopos.push_back(&MesaTopos);
+	objetosTopos.push_back(&TuboTopos);
+	objetosTopos.push_back(&Pirania);
 
 	//push_back de modelos de comida
 	objetosComida.push_back(&palomitas);
@@ -725,6 +747,7 @@ int main()
 		tierra(model, uniformModel, tierraTexture, meshList);
 
 		//Redenrizado del puesto de lanzamiento de hacha
+		model = glm::mat4(1.0);
 		hacha(model, uniformModel, objetosHacha);
 
 		//Redenrizado del puesto de jaula de bateo
