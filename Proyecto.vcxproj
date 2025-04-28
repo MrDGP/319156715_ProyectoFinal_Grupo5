@@ -29,6 +29,8 @@
     <ClInclude Include="Dardos.h" />
     <ClInclude Include="definition.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Arco.h" />
+    <ClInclude Include="ZonaFotos.h" />
     <ClInclude Include="Hacha.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="main.h" />
@@ -56,6 +58,8 @@
     <ClCompile Include="Dados.cpp" />
     <ClCompile Include="Dardos.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Arco.cpp" />
+    <ClCompile Include="ZonaFotos.cpp" />
     <ClCompile Include="Hacha.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />

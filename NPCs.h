@@ -18,7 +18,7 @@
 void NPCs(glm::mat4 model, GLuint uniformModel, std::vector<Model*> personajesNPCs);
 
 //Personajes de Snoopy
-void renderWoodstock(glm::mat4 model, GLuint uniformModel, Model& woodstock, glm::vec3 posicion, int grados);
+void renderSnoopy(glm::mat4 model, GLuint uniformModel, Model& snoopy, glm::vec3 posicion, int grados);
 void renderPeppermint(glm::mat4 model, GLuint uniformModel, Model& peppermint, glm::vec3 posicion, int grados);
 void renderCharlie(glm::mat4 model, GLuint uniformModel, Model& charlie, glm::vec3 posicion, int grados);
 

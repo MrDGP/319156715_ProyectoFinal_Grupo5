@@ -50,6 +50,12 @@
 #include "NPCs.h"
 #include "main.h"
 
+//Archivo Zona Fotos
+#include "ZonaFotos.h"
+
+//Archivo Arco
+#include "Arco.h"
+
 const float toRadians = 3.14159265f / 180.0f;
 
 //Variables para el ciclo de dia y de noche
@@ -71,6 +77,8 @@ std::vector<Model*> objetosHacha;
 std::vector<Model*> objetosTopos;
 std::vector<Model*> objetosComida;
 std::vector<Model*> personajesNPCs;
+std::vector<Model*> objetosZonaFotos;
+std::vector<Model*> objetosArco;
 
 //Camaras 
 Camera camera;
@@ -84,6 +92,7 @@ Texture dirtTexture;
 Texture plainTexture;
 Texture pisoTexture;
 Texture tierraTexture;
+Texture letreroTexture;
 
 //Variables para modelos del puesto de lanzamiento de hacha
 Model Stand1;
@@ -152,7 +161,7 @@ Model helados;
 Model algodones;
 
 //Variables para modelos de NPCs
-Model woodstock;
+Model snoopy;
 Model peppermint;
 Model charlie;
 Model carrie;
@@ -162,10 +171,17 @@ Model kingBoo;
 Model donkeyKong;
 Model wario;
 
-//Variables para modelos de personajes principales
+//Variables para modelos de la zona de fotos
+Model casaSnoopy;
 Model gumball;
 Model yoshi;
-Model snoopy;
+Model snoopyAviador;
+Model woodstock;
+
+//Variables para modelos del arco
+Model arcoLetrero;
+Model puertaDerecha;
+Model puertaIzquierda;
 
 //Skybox
 Skybox skybox;
@@ -404,6 +420,7 @@ int main()
 		glm::vec3(0.0f, 1.0f, 0.0f),
 		270.0f, 0.0f, 0.0f, 0.0f);
 
+	//Carga de texturas
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
 	dirtTexture = Texture("Textures/dirt.png");
@@ -414,6 +431,10 @@ int main()
 	pisoTexture.LoadTextureA();
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
+	tierraTexture = Texture("Textures/tierra.jpg");
+	tierraTexture.LoadTextureA();
+	letreroTexture = Texture("Textures/letrero.jpg");
+	letreroTexture.LoadTextureA();
 
 	//Carga de modelos del puesto de lanzamiento de hacha
 	Stand1 = Model();
@@ -532,20 +553,32 @@ int main()
 	algodones.LoadModel("Models/algodones.obj");
 	
 	//Carga de modelos de NPCs
-	woodstock = Model();
-	woodstock.LoadModel("Models/Woodstock.obj");
+	snoopy = Model();
+	snoopy.LoadModel("Models/snoopy.obj");
 	peppermint = Model();
 	peppermint.LoadModel("Models/Peppermint.obj");
 	charlie = Model();
 	charlie.LoadModel("Models/Charlie.obj");
 
-	//Carga de modelos de los personajes principales
+	//Carga de modelos de la Zona de fotos
+	casaSnoopy = Model();
+	casaSnoopy.LoadModel("Models/casaSnoopy.obj");
 	gumball = Model();
 	gumball.LoadModel("Models/gumball.obj");
 	yoshi = Model();
 	yoshi.LoadModel("Models/yoshi.obj");
-	snoopy = Model();
-	snoopy.LoadModel("Models/snoopy.obj");
+	snoopyAviador = Model();
+	snoopyAviador.LoadModel("Models/snoopyAviador.obj");
+	woodstock = Model();
+	woodstock.LoadModel("Models/woodstock.obj");
+
+	//Carga de modelos del arco
+	arcoLetrero = Model();
+	arcoLetrero.LoadModel("Models/arco.obj");
+	puertaDerecha = Model();
+	puertaDerecha.LoadModel("Models/puertaDerecha.obj");
+	puertaIzquierda = Model();
+	puertaIzquierda.LoadModel("Models/puertaIzquierda.obj");
 
 	//push_back de modelos del puesto de lanzamiento de hacha
 	objetosHacha.push_back(&Stand1);
@@ -595,16 +628,6 @@ int main()
 	objetosTopos.push_back(&Pirania);
 	objetosTopos.push_back(&cuadroGumball);
 
-	//push_back de modelos de comida
-	objetosComida.push_back(&palomitas);
-	objetosComida.push_back(&helados);
-	objetosComida.push_back(&algodones);
-
-	//push_back de modelos de NPCs
-	personajesNPCs.push_back(&woodstock);
-	personajesNPCs.push_back(&peppermint);
-	personajesNPCs.push_back(&charlie);
-
 	//push_back de modelos de ambientación
 	objetosAmbientacion.push_back(&banca);
 	objetosAmbientacion.push_back(&luminaria1);
@@ -618,9 +641,30 @@ int main()
 	objetosAmbientacion.push_back(&plantaDecorativa);
 	objetosAmbientacion.push_back(&estantePremios);
 	objetosAmbientacion.push_back(&luminariaTecho);
-	//
 	objetosAmbientacion.push_back(&laguna);
 	objetosAmbientacion.push_back(&laguna);
+
+	//push_back de modelos de comida
+	objetosComida.push_back(&palomitas);
+	objetosComida.push_back(&helados);
+	objetosComida.push_back(&algodones);
+
+	//push_back de modelos de NPCs
+	personajesNPCs.push_back(&snoopy);
+	personajesNPCs.push_back(&peppermint);
+	personajesNPCs.push_back(&charlie);
+
+	//push_back de modelos de la zona de fotos
+	objetosZonaFotos.push_back(&casaSnoopy);
+	objetosZonaFotos.push_back(&gumball);
+	objetosZonaFotos.push_back(&yoshi);
+	objetosZonaFotos.push_back(&snoopyAviador);
+	objetosZonaFotos.push_back(&woodstock);
+
+	//push_back de modelos del arco
+	objetosArco.push_back(&arcoLetrero);
+	objetosArco.push_back(&puertaDerecha);
+	objetosArco.push_back(&puertaIzquierda);
 
 	//Skybox
 	std::vector<std::string> skyboxFaces;
@@ -947,7 +991,6 @@ int main()
 		tierra(model, uniformModel, tierraTexture, meshList);
 
 		//Redenrizado del puesto de lanzamiento de hacha
-		model = glm::mat4(1.0);
 		hacha(model, uniformModel, objetosHacha);
 
 		//Redenrizado del puesto de jaula de bateo
@@ -973,6 +1016,12 @@ int main()
 
 		//Renderizado de NPCs
 		NPCs(model, uniformModel, personajesNPCs);
+
+		//Renderizado de zona de fotos
+		zonaFotos(model, uniformModel, objetosZonaFotos);
+
+		//Renderizado de zona de fotos
+		arco(model, uniformModel, objetosArco);
 
 		//Renderizado de personajes principales  
 		//(Para utilizar un personaje distinto comenta el personaje actual y descomenta el que quieras usar)

@@ -4,7 +4,7 @@ const float toRadians = 3.14159265f / 180.0f;
 
 void NPCs(glm::mat4 model, GLuint uniformModel, std::vector<Model*> personajesNPCs) {
 	//Cambiar las ubicaciones 
-	//renderWoodstock(model, uniformModel, *personajesNPCs[0], glm::vec3(0.0f, -1.0f, 0.0f), 0); //Visitante
+	renderSnoopy(model, uniformModel, *personajesNPCs[0], glm::vec3(67.0f, -0.6f, 89.0f), 180);
 	renderPeppermint(model, uniformModel, *personajesNPCs[1], glm::vec3(-65.0f, -1.0f, -90.0f), 0);
 	renderCharlie(model, uniformModel, *personajesNPCs[2], glm::vec3(195.0f, -1.0f, -90.0f), 0);
 	//renderCarrie(model, uniformModel, *personajesNPCs[3], glm::vec3(0.0f, -1.0f, 0.0f), 0);
@@ -20,13 +20,13 @@ void NPCs(glm::mat4 model, GLuint uniformModel, std::vector<Model*> personajesNP
 	renderCharlie(model, uniformModel, *personajesNPCs[2], glm::vec3(-220.0f, -1.0f, 60.0f), 90);
 }
 
-void renderWoodstock(glm::mat4 model, GLuint uniformModel, Model& woodstock, glm::vec3 posicion, int grados) {
+void renderSnoopy(glm::mat4 model, GLuint uniformModel, Model& snoopy, glm::vec3 posicion, int grados) {
 	model = glm::mat4(1.0);
 	model = glm::translate(model, posicion);
-	model = glm::scale(model, glm::vec3(50.0f, 50.0f, 50.0f));
+	model = glm::scale(model, glm::vec3(22.0f, 22.0f, 22.0f));
 	model = glm::rotate(model, grados * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-	woodstock.RenderModel();
+	snoopy.RenderModel();
 }
 
 void renderPeppermint(glm::mat4 model, GLuint uniformModel, Model& peppermint, glm::vec3 posicion, int grados) {
