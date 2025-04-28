@@ -31,6 +31,7 @@
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Hacha.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
@@ -71,6 +72,12 @@
     <ClCompile Include="Tierra.cpp" />
     <ClCompile Include="Topos.cpp" />
     <ClCompile Include="Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader_light.frag" />
+    <None Include="shaders\shader_light.vert" />
+    <None Include="shaders\skybox.frag" />
+    <None Include="shaders\skybox.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
