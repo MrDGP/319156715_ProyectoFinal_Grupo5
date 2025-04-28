@@ -1,16 +1,17 @@
 #include "Dardos.h"
 
 void dardos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosDardos) {
-	renderStand4(model, uniformModel, *objetosDardos[0], *objetosDardos[1], *objetosDardos[2], *objetosDardos[3], *objetosDardos[4], glm::vec3(50.0f, -1.42f, -140.0f));
+	renderStand4(model, uniformModel, *objetosDardos[0], *objetosDardos[1], *objetosDardos[2], *objetosDardos[3], *objetosDardos[4], *objetosDardos[5], *objetosDardos[6], glm::vec3(50.0f, -1.42f, -140.0f));
 }
 
-void renderStand4(glm::mat4 model, GLuint uniformModel, Model& stand, Model& base, Model& globo, Model& tabla, Model& dardo, glm::vec3 posicion) {
+void renderStand4(glm::mat4 model, GLuint uniformModel, Model& stand, Model& base, Model& globo, Model& tabla, Model& dardo, Model &cuadro1, Model &cuadro2, glm::vec3 posicion) {
 	glm::mat4 modelaux(1.0);
 	glm::mat4 modelaux2(1.0);
 
 	//Casa
 	modelaux = glm::translate(modelaux, posicion);
 	model = modelaux;
+	modelaux2 = model;
 	modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
 	stand.RenderModel();
@@ -21,6 +22,18 @@ void renderStand4(glm::mat4 model, GLuint uniformModel, Model& stand, Model& bas
 	model = glm::scale(model, glm::vec3(2.1f, 2.0f, 1.5f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	tabla.RenderModel();
+
+	//Cuadro1
+	model = modelaux2;
+	model = glm::translate(model, glm::vec3(-25.0f, 8.0f, -3.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(2.0f, 2.0f, 1.0f));
+	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	cuadro1.RenderModel();
+	//Cuadro2
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 47.8f));
+	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	cuadro2.RenderModel();
 
 	//Dardos
 	model = modelaux;
