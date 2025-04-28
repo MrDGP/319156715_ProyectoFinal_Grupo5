@@ -1,5 +1,5 @@
 #include "Window.h"
-
+#include "CommonValues.h"
 Window::Window()
 {
 	width = 800;
@@ -127,9 +127,126 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 			theWindow->camaraActiva = 2; // tercera persona
 		}
 		if (key == GLFW_KEY_4) {
-			theWindow->camaraActiva = 3; // lámpara
+			theWindow->camaraActiva = 3; // PUESTOS
 		}
 	}
+
+// ---------------------------------------------
+// X - controlar puesto 0
+	if (key == GLFW_KEY_X && action == GLFW_PRESS) {
+		if (theWindow->getCamaraActiva() == 3) {
+			// Si estamos en cámara puestos
+			theWindow->puestoActual = 0; // Cambio de puesto
+			// Solo permitir controlar la luz del puesto actual
+			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+				if (i == theWindow->puestoActual) {
+					theWindow->lucesSpot[i] = !theWindow->lucesSpot[i]; // Toggle luz de mi puesto
+				}
+				else {
+					theWindow->lucesSpot[i] = false; // Asegurar que las otras estén apagadas
+				}
+			}
+		}
+		else {
+			// Libre o tercera persona
+			theWindow->lucesSpot[0] = !theWindow->lucesSpot[0]; // Toggle libre
+		}
+	}
+
+	// ---------------------------------------------
+	// C - controlar puesto 1
+	if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+		if (theWindow->getCamaraActiva() == 3) {
+			theWindow->puestoActual = 1;
+			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+				if (i == theWindow->puestoActual) {
+					theWindow->lucesSpot[i] = !theWindow->lucesSpot[i];
+				}
+				else {
+					theWindow->lucesSpot[i] = false;
+				}
+			}
+		}
+		else {
+			theWindow->lucesSpot[1] = !theWindow->lucesSpot[1];
+		}
+	}
+
+	// ---------------------------------------------
+	// V - controlar puesto 2
+	if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+		if (theWindow->getCamaraActiva() == 3) {
+			theWindow->puestoActual = 2;
+			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+				if (i == theWindow->puestoActual) {
+					theWindow->lucesSpot[i] = !theWindow->lucesSpot[i];
+				}
+				else {
+					theWindow->lucesSpot[i] = false;
+				}
+			}
+		}
+		else {
+			theWindow->lucesSpot[2] = !theWindow->lucesSpot[2];
+		}
+	}
+
+	// ---------------------------------------------
+	// B - controlar puesto 3
+	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
+		if (theWindow->getCamaraActiva() == 3) {
+			theWindow->puestoActual = 3;
+			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+				if (i == theWindow->puestoActual) {
+					theWindow->lucesSpot[i] = !theWindow->lucesSpot[i];
+				}
+				else {
+					theWindow->lucesSpot[i] = false;
+				}
+			}
+		}
+		else {
+			theWindow->lucesSpot[3] = !theWindow->lucesSpot[3];
+		}
+	}
+	// ---------------------------------------------
+	// N - controlar puesto 4
+	if (key == GLFW_KEY_N && action == GLFW_PRESS) {
+		if (theWindow->getCamaraActiva() == 3) {
+			theWindow->puestoActual = 4;
+			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+				if (i == theWindow->puestoActual) {
+					theWindow->lucesSpot[i] = !theWindow->lucesSpot[i];
+				}
+				else {
+					theWindow->lucesSpot[i] = false;
+				}
+			}
+		}
+		else {
+			theWindow->lucesSpot[4] = !theWindow->lucesSpot[4];
+		}
+	}
+	// ---------------------------------------------
+	// M - controlar puesto 5
+	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
+		if (theWindow->getCamaraActiva() == 3) {
+			theWindow->puestoActual = 5;
+			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+				if (i == theWindow->puestoActual) {
+					theWindow->lucesSpot[i] = !theWindow->lucesSpot[i];
+				}
+				else {
+					theWindow->lucesSpot[i] = false;
+				}
+			}
+		}
+		else {
+			theWindow->lucesSpot[5] = !theWindow->lucesSpot[5];
+		}
+	}
+	//--------------------------------------------------------
+
 	
 	if (key == GLFW_KEY_Y)
 	{
@@ -154,61 +271,7 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		}
 	}
 
-	if (key == GLFW_KEY_F)
-	{
-		theWindow->avanzarCarro += 10.0;
-	}
-
-	if (key == GLFW_KEY_G)
-	{
-		theWindow->retrocederCarro -= 10.0;
-	}
-
-	if (key == GLFW_KEY_H)
-	{
-		if (theWindow->cofre > -45.0 && theWindow->bandera1 == 0) {
-			theWindow->cofre -= 5.0;
-		}
-		else if (theWindow->cofre == -45.0) {
-			theWindow->bandera1 = 1;
-			theWindow->cofre += 5.0;
-		}
-		else if (theWindow->cofre < 0.0) {
-			theWindow->cofre += 5.0;
-		}
-		else {
-			theWindow->bandera1 = 0;
-		}
-	}
-
-	if (key == GLFW_KEY_J)
-	{
-		theWindow->avanzarHeli -= 10.0;
-	}
-
-	if (key == GLFW_KEY_K)
-	{
-		theWindow->retrocederHeli += 10.0;
-	}
-
-	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
-		if (theWindow->luminaria == 1) {
-			theWindow->luminaria = 0;
-		}
-		else {
-			theWindow->luminaria = 1;
-		}
-	}
-
-	if (key == GLFW_KEY_H) {
-		theWindow->lucesCarro = 0;
-	}
-	else if (key == GLFW_KEY_F) {
-		theWindow->lucesCarro = 1;
-	}
-	else if (key == GLFW_KEY_G) {
-		theWindow->lucesCarro = 2;
-	}
+	
 
 }
 

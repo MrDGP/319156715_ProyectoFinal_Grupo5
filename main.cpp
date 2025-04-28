@@ -48,13 +48,14 @@
 
 //Archivo NPCs
 #include "NPCs.h"
+#include "main.h"
 
 const float toRadians = 3.14159265f / 180.0f;
 
 //Variables para el ciclo de dia y de noche
 bool esDeDia = true;
 float intensidad = 0.5f;  //Inicia de día
-float velocidad = 0.00005f; //Velocidad de cambio de luz
+float velocidad = 0.0005f; //Velocidad de cambio de luz //valor original: 0.00005
 
 Window mainWindow;
 
@@ -180,6 +181,11 @@ DirectionalLight mainLight;
 
 PointLight pointLights[MAX_POINT_LIGHTS];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
+SpotLight pointLightsOff[1];
+int camaraAnterior = -1; // Para saber la cámara anterior
+bool yaApagueEnPuestos = false; // Para saber si ya apagué en cámara puestos
+
+
 
 //Vertex Shader
 static const char* vShader = "shaders/shader_light.vert";
@@ -615,25 +621,100 @@ int main()
 
 	//Luz direccional, sólo 1 y siempre debe de existir 
 	//Para la luz del sol
-	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-		0.3f, 0.3f,
-		0.0f, 0.0f, -1.0f);
+	//mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
+	//	0.3f, 0.3f,
+	//	0.0f, 0.0f, -1.0f);
+	
 	unsigned int pointLightCount = 0;  //Contador de luces puntuales
 
-	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f,
-		5.0f, 3.0f, -4.0f,
-		0.3f, 0.2f, 0.1f);
+	//Empiezan luces de los postes
+	
+	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,   //luz primer poste
+		2.0f, 0.5f,
+		115.0f, 35.0f, -70.0f,
+		1.0f,	0.022f,	0.0019f);
 	pointLightCount++;
 
-	unsigned int spotLightCount = 0;
+	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,   //luz segundo poste			115.0f, -1.0f, 77.0
+		2.0f, 0.5f,
+		115.0f, 35.0f, 70.0f,
+		1.0f, 0.022f, 0.0019f);
+	pointLightCount++;
+	
+	pointLights[2] = PointLight(1.0f, 1.0f, 1.0f,   //luz tercer poste			-15.0f, -1.0f, -77.0f
+		2.0f, 0.5f,
+		-15.0f, 35.0f, -70.0f,
+		1.0f, 0.022f, 0.0019f);
+	pointLightCount++;
 
-	spotLights[0] = SpotLight(1.0f, 0.0f, 1.0f,
-		1.0f, 2.0f,
-		0.0f, -1.0f, -6.0f,
-		0.0f, 0.0f, 1.0f,
-		0.0f, 0.1f, 0.0f,
-		20.0f);
+	
+	pointLights[3] = PointLight(1.0f, 1.0f, 1.0f,   //luz cuarto poste			-15.0f, -1.0f, 77.0f
+		2.0f, 0.5f,
+		-15.0f, 35.0f, 70.0f,
+		1.0f, 0.022f, 0.0019f);
+	pointLightCount++;
+
+	pointLights[4] = PointLight(1.0f, 1.0f, 1.0f,   //luz cuarto poste			-145.0f, -1.0f, -77.0f
+		2.0f, 0.5f,
+		-145.0f, 35.0f, -70.0f,
+		1.0f, 0.022f, 0.0019f);
+	pointLightCount++;
+
+	pointLights[5] = PointLight(1.0f, 1.0f, 1.0f,   //luz cuarto poste			-145.0f, -1.0f, 77.0
+		2.0f, 0.5f,
+		-145.0f, 35.0f, 70.0f,
+		1.0f, 0.022f, 0.0019f);
+	pointLightCount++;
+	
+	// Empiezan spotLights     hacha
+	
+	unsigned int spotLightCount = 0;
+	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz bateo
+		2.0f, 5.0f,		
+		-80.2f, 50.3f, -140.0f,	//Posicion
+		0.0f, -1.0f, 0.0f,		//A donde apunta			0.0f, 0.1f, 0.0f
+		0.0f, 0.08f, 0.0f,		//coeficientes
+		30.0f);					//rango(cono de luz)
+	spotLightCount++;
+
+	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz dardos
+		2.0f, 5.0f,
+		49.9f, 50.3f, -140.0f,
+		0.0f, -1.0f, 0.0f,		
+		0.0f, 0.08f, 0.0f,		
+		30.0f);					
+	spotLightCount++;
+
+	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz dados
+		2.0f, 5.0f,
+		180.0f, 50.3f, -140.0f,
+		0.0f, -1.0f, 0.0f,
+		0.0f, 0.08f, 0.0f,
+		30.0f);
+	spotLightCount++;
+
+	spotLights[3] = SpotLight(1.0f, 1.0f, 1.0f,		//luz hacha
+		2.0f, 5.0f,
+		180.0f, 50.0f, 140.0f,
+		0.0f, -1.0f, 0.0f,
+		0.0f, 0.08f, 0.0f,
+		30.0f);
+	spotLightCount++;
+
+	spotLights[4] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz topos
+		2.0f, 5.0f,
+		50.0f, 50.3f, 140.0f,
+		0.0f, -1.0f, 0.0f,
+		0.0f, 0.08f, 0.0f,
+		30.0f);
+	spotLightCount++;
+
+	spotLights[5] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz bolos
+		2.0f, 5.0f,
+		-80.0f, 50.3f, 140.0f,
+		0.0f, -1.0f, 0.0f,
+		0.0f, 0.08f, 0.0f,
+		30.0f);
 	spotLightCount++;
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
@@ -656,6 +737,33 @@ int main()
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
+		
+		int camaraActual = mainWindow.getCamaraActiva();
+
+		// --- Si estoy en cámara aérea, apagar luces SIEMPRE
+		if (camaraActual == 1) {
+			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+				mainWindow.getLucesSpot()[i] = false;
+			}
+		}
+
+		// --- Si CAMBIO a cámara puestos, apagar luces solo una vez
+		if (camaraActual == 3 && camaraAnterior != 3) {
+			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+				mainWindow.getLucesSpot()[i] = false;
+			}
+			yaApagueEnPuestos = true;
+		}
+
+		// --- Si CAMBIO a otra cámara diferente de puestos, resetear la bandera
+		if (camaraActual != 3) {
+			yaApagueEnPuestos = false;
+		}
+
+		// Guardar la cámara actual para comparar en el siguiente frame
+		camaraAnterior = camaraActual;
+
+
 		//variables para control de camara y personajes
 		glm::vec3 cameraPos = camera.getCameraPosition();
 		glm::vec3 cameraDir = camera.getCameraDirection();
@@ -689,7 +797,7 @@ int main()
 			activeCamera = &camaraPuestos;
 			break;
 		default:
-			activeCamera = &camera; //Fallback a cámara libre
+			activeCamera = &camera; //cámara libre
 			break;
 		}
 
@@ -713,7 +821,35 @@ int main()
 			if (mainWindow.getsKeys()[GLFW_KEY_D])
 				posicionModelo += right * deltaTime * 1.5f;
 			break;
-		case 3: camaraPuestos.mouseControl(xChange, yChange); break;
+		case 3:
+			camaraPuestos.mouseControl(xChange, yChange);
+
+			// Caso para mover la cámara a diferentes puestos DEFAULT EN BATEO
+			if (mainWindow.getsKeys()[GLFW_KEY_X]) {
+				camaraPuestos.setYaw(-90.0f);
+				camaraPuestos.setPosition(glm::vec3(-80.0f, 20.0f, -40.0f)); // Puesto 1(BATEO)
+			}
+			if (mainWindow.getsKeys()[GLFW_KEY_C]) {
+				camaraPuestos.setYaw(-90.0f);
+				camaraPuestos.setPosition(glm::vec3(50.0f, 20.0f, -40.0f)); // Puesto 1(DARDOS)
+			}
+			if (mainWindow.getsKeys()[GLFW_KEY_V]) {
+				camaraPuestos.setYaw(-90.0f);
+				camaraPuestos.setPosition(glm::vec3(180.0f, 20.0f, -40.0f));  // Puesto 2(DADOS)
+			}
+			if (mainWindow.getsKeys()[GLFW_KEY_B]) {
+				camaraPuestos.setYaw(90.0f);
+				camaraPuestos.setPosition(glm::vec3(180.0f, 20.0f, 40.0f));     // Puesto 3(HACHA)
+			}
+			if (mainWindow.getsKeys()[GLFW_KEY_N]) {
+				camaraPuestos.setYaw(90.0f);
+				camaraPuestos.setPosition(glm::vec3(50.0f, 20.0f, 40.0f));   // Puesto 4 (TOPOS)
+			}
+			if (mainWindow.getsKeys()[GLFW_KEY_M]) {
+				camaraPuestos.setYaw(90.0f);
+				camaraPuestos.setPosition(glm::vec3(-80.0f, 20.0f, 40.0f));   // Puesto 4 (BOLICHE)
+			}
+			break;
 		}
 
 		//Clear the window
@@ -738,21 +874,23 @@ int main()
 			activeCamera->getCameraPosition().y,
 			activeCamera->getCameraPosition().z);
 
-		// luz ligada a la cámara de tipo flash
-		//sirve para que en tiempo de ejecución (dentro del while) se cambien propiedades de la luz
-		//glm::vec3 lowerLight = camera.getCameraPosition();
-		//lowerLight.y -= 0.3f;
-		//spotLights1[0].SetFlash(lowerLight, camera.getCameraDirection());
+		
+		//Bloque para control de lamparas y cuales se envian al shader
+		SpotLight spotLightsToSend[MAX_SPOT_LIGHTS];
+		unsigned int activeSpotLights = 0;
+		for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
+			if (mainWindow.getLucesSpot()[i]) { // Solo enviar las luces que estén encendidas
+				spotLightsToSend[activeSpotLights++] = spotLights[i];
+			}
+		}
+		shaderList[0].SetSpotLights(spotLightsToSend, activeSpotLights);
 
-		//Luces al shader 
-		// shaderList[0].SetSpotLights(spotLights, spotLightCount);
-		// shaderList[0].SetPointLights(pointLights1, pointLightCount1);
 
 		//Bloque para ciclo de día y de noche 
 		if (esDeDia) {
 			intensidad -= velocidad;
-			if (intensidad <= 0.01f) {
-				intensidad = 0.01f;  //Mínimo de noche
+			if (intensidad <= 0.005f) {
+				intensidad = 0.005f;  //Mínimo de noche
 				esDeDia = false;
 			}
 		}
@@ -768,6 +906,14 @@ int main()
 			intensidad,  // Intensidad difusa (más fuerte)
 			0.0f, -1.0f, 0.0f);  //Dirección
 		shaderList[0].SetDirectionalLight(&mainLight);
+
+		//Bloque para control de postes automaticos
+		if (intensidad <= 0.09) {
+			shaderList[0].SetPointLights(pointLights, pointLightCount);      // lámpara encendida
+		}
+		else if (intensidad >= 0.3){
+			shaderList[0].SetPointLights(pointLightsOff, 0);  // lámpara apagada
+		}
 
 		//Piso
 		model = glm::mat4(1.0);
