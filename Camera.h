@@ -24,6 +24,8 @@ public:
 	void setPosition(glm::vec3 newPosition) {
 		position = newPosition;
 	}
+	
+	void setYaw(float newYaw);
 
 private:
 	glm::vec3 position;

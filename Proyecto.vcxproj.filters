@@ -97,6 +97,7 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Arco.h">
+    <ClInclude Include="main.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -179,5 +180,19 @@
     <ClCompile Include="Arco.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader_light.frag">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="shaders\shader_light.vert">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="shaders\skybox.frag">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="shaders\skybox.vert">
+      <Filter>Archivos de recursos</Filter>
+    </None>
   </ItemGroup>
 </Project>
