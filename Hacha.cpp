@@ -9,6 +9,7 @@ void renderStand(glm::mat4 model, GLuint uniformModel, Model &stand, Model &hach
 	glm::mat4 modelaux2(1.0);
 
 	//Casa
+	model = glm::mat4(1.0);
 	model = glm::translate(model, posicion);
 	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	modelaux = model;

@@ -13,7 +13,7 @@
 
 #include "Mesh.h"
 #include "Texture.h"
-#include"Model.h"
+#include "Model.h"
 
 void ambientacion(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosAmbientacion);
 
@@ -26,6 +26,7 @@ void renderArbol2(glm::mat4 model, GLuint uniformModel, Model& arbol2, glm::vec3
 void renderArbol3(glm::mat4 model, GLuint uniformModel, Model& arbol3, glm::vec3 posicion);
 void renderBote1(glm::mat4 model, GLuint uniformModel, Model& bote1, glm::vec3 posicion, int grados);
 void renderBote2(glm::mat4 model, GLuint uniformModel, Model& bote2, glm::vec3 posicion, int grados);
+void renderArco(glm::mat4 model, GLuint uniformModel, Model& arco, glm::vec3 posicion, int grados);
 
 //Ambientacion de puestos
 void renderPlantaDecorativa(glm::mat4 model, GLuint uniformModel, Model& planta, glm::vec3 posicion);
