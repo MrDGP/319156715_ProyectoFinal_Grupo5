@@ -1,10 +1,10 @@
 #include "Topos.h"
 
 void topos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosTopos) {
-	renderStand6(model, uniformModel, *objetosTopos[0], *objetosTopos[1], *objetosTopos[2], *objetosTopos[3], glm::vec3(50.0f, -1.42f, 140.0f));
+	renderStand6(model, uniformModel, *objetosTopos[0], *objetosTopos[1], *objetosTopos[2], *objetosTopos[3], *objetosTopos[4], glm::vec3(50.0f, -1.42f, 140.0f));
 }
 
-void renderStand6(glm::mat4 model, GLuint uniformModel, Model &stand, Model &mesa, Model &tubo, Model &planta, glm::vec3 posicion) {
+void renderStand6(glm::mat4 model, GLuint uniformModel, Model &stand, Model &mesa, Model &tubo, Model &planta, Model &cuadro, glm::vec3 posicion) {
 	glm::mat4 modelaux(1.0);
 	glm::mat4 modelaux2(1.0);
 
@@ -12,6 +12,7 @@ void renderStand6(glm::mat4 model, GLuint uniformModel, Model &stand, Model &mes
 	modelaux = glm::translate(modelaux, posicion);
 	modelaux = glm::rotate(modelaux, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = modelaux;
+	modelaux2 = modelaux;
 	modelaux = glm::scale(modelaux, glm::vec3(2.5f, 2.5f, 2.5f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelaux));
 	stand.RenderModel();
@@ -204,4 +205,12 @@ void renderStand6(glm::mat4 model, GLuint uniformModel, Model &stand, Model &mes
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	tubo.RenderModel();
 	planta.RenderModel();
+
+	//Cuadro
+	model = modelaux2;
+	model = glm::translate(model, glm::vec3(0.0f, 15.0f, -45.0f));
+	model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	cuadro.RenderModel();
 }

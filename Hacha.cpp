@@ -18,7 +18,7 @@ void renderStand(glm::mat4 model, GLuint uniformModel, Model &stand, Model &hach
 
 	//Tabla1
 	model = modelaux;
-	model = glm::translate(model, glm::vec3(-12.0f, 5.0f, 15.0f));
+	model = glm::translate(model, glm::vec3(-12.5f, 5.0f, 15.0f));
 	modelaux2 = model;
 	model = glm::scale(model, glm::vec3(1.1f, 2.0f, 1.5f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -31,7 +31,7 @@ void renderStand(glm::mat4 model, GLuint uniformModel, Model &stand, Model &hach
 	hacha.RenderModel();
 	//Tabla2
 	model = modelaux;
-	model = glm::translate(model, glm::vec3(11.0f, 5.0f, 15.0f));
+	model = glm::translate(model, glm::vec3(11.5f, 5.0f, 15.0f));
 	modelaux2 = model;
 	model = glm::scale(model, glm::vec3(1.0f, 2.0f, 1.5f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -47,7 +47,7 @@ void renderStand(glm::mat4 model, GLuint uniformModel, Model &stand, Model &hach
 	model = modelaux;
 	model = glm::translate(model, glm::vec3(0.0f, 0.5f, -12.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(3.0f, 2.5f, 2.5f));
+	model = glm::scale(model, glm::vec3(3.0f, 2.3f, 2.5f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	reja.RenderModel();
 

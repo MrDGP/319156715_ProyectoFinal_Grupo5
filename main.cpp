@@ -114,6 +114,8 @@ Model baseDardos;
 Model globoDardos;
 Model tablaDardos;
 Model dardo;
+Model cuadroSnoopy1;
+Model cuadroSnoopy2;
 
 //Variables para modelos del puesto de bolos
 Model Stand5;
@@ -127,6 +129,7 @@ Model Stand6;
 Model MesaTopos;
 Model TuboTopos;
 Model Pirania;
+Model cuadroGumball;
 
 //Variables para modelos del ambientación
 Model banca;
@@ -141,6 +144,7 @@ Model bote2;
 Model plantaDecorativa;
 Model estantePremios;
 Model luminariaTecho;
+Model laguna;
 
 //Variables para modelos del puestos comida
 Model palomitas;
@@ -462,6 +466,10 @@ int main()
 	tablaDardos.LoadModel("Models/TablaDardos.obj");
 	dardo = Model();
 	dardo.LoadModel("Models/Dardo.obj");
+	cuadroSnoopy1 = Model();
+	cuadroSnoopy1.LoadModel("Models/cuadroSnoopy1.obj");
+	cuadroSnoopy2 = Model();
+	cuadroSnoopy2.LoadModel("Models/cuadroSnoopy2.obj");
 
 	//Carga de modelos del puesto de bolos
 	Stand5 = Model();
@@ -484,6 +492,8 @@ int main()
 	TuboTopos.LoadModel("Models/TuboTopos.obj");
 	Pirania = Model();
 	Pirania.LoadModel("Models/Pirania.obj");
+	cuadroGumball = Model();
+	cuadroGumball.LoadModel("Models/cuadroGumball.obj");
 
 	//Carga de modelos de ambientación
 	banca = Model();
@@ -510,6 +520,8 @@ int main()
 	estantePremios.LoadModel("Models/estantePremios.obj");
 	luminariaTecho = Model();
 	luminariaTecho.LoadModel("Models/luminariaTecho.obj");
+	laguna = Model();
+	laguna.LoadModel("Models/Laguna.obj");
 
 	//Carga de modelos de comida
 	palomitas = Model();
@@ -566,6 +578,8 @@ int main()
 	objetosDardos.push_back(&globoDardos);
 	objetosDardos.push_back(&tablaDardos);
 	objetosDardos.push_back(&dardo);
+	objetosDardos.push_back(&cuadroSnoopy1);
+	objetosDardos.push_back(&cuadroSnoopy2);
 
 	//push_back de modelos del puesto de bolos
 	objetosBolos.push_back(&Stand5);
@@ -579,6 +593,7 @@ int main()
 	objetosTopos.push_back(&MesaTopos);
 	objetosTopos.push_back(&TuboTopos);
 	objetosTopos.push_back(&Pirania);
+	objetosTopos.push_back(&cuadroGumball);
 
 	//push_back de modelos de comida
 	objetosComida.push_back(&palomitas);
@@ -603,6 +618,9 @@ int main()
 	objetosAmbientacion.push_back(&plantaDecorativa);
 	objetosAmbientacion.push_back(&estantePremios);
 	objetosAmbientacion.push_back(&luminariaTecho);
+	//
+	objetosAmbientacion.push_back(&laguna);
+	objetosAmbientacion.push_back(&laguna);
 
 	//Skybox
 	std::vector<std::string> skyboxFaces;

@@ -14,4 +14,4 @@
 #include"Model.h"
 
 void dardos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosDardos);
-void renderStand4(glm::mat4 model, GLuint uniformModel, Model& stand, Model& base, Model& globo, Model& tabla, Model& dardo, glm::vec3 posicion);
+void renderStand4(glm::mat4 model, GLuint uniformModel, Model& stand, Model& base, Model& globo, Model& tabla, Model& dardo, Model &cuadro1, Model &cuadro2, glm::vec3 posicion);
