@@ -17,6 +17,8 @@ void bateo(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosBate
 
 void renderStand2(glm::mat4 model, GLuint uniformModel, Model& stand, glm::vec3 posicion);
 void renderBardas(glm::mat4 model, GLuint uniformModel, Model& bardaBateo, glm::vec3 posicion);
-void renderObjetivoBateo(glm::mat4 model, GLuint uniformModel, Model& objetivo, glm::vec3 posicion);
+void renderbolaBateo(glm::mat4 model, GLuint uniformModel, Model& objetivo, glm::vec3 posicion);
 void renderCartelBateo(glm::mat4 model, GLuint uniformModel, Model& cartelBateo, glm::vec3 posicion);
 void renderBats(glm::mat4 model, GLuint uniformModel, Model& bats, glm::vec3 posicion);
+void actualizarBateo(float deltaTime);
+void lanzarBateo();
