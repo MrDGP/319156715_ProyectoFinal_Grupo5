@@ -15,4 +15,4 @@
 #include "Texture.h"
 #include"Model.h"
 
-void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosZonaFotos);
+void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosZonaFotos, float deltaTime);

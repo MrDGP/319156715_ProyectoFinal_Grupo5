@@ -172,16 +172,17 @@ Model donkeyKong;
 Model wario;
 
 //Variables para modelos de la zona de fotos
-Model casaSnoopy;
+Model casaConSnoopy;
 Model gumball;
 Model yoshi;
-Model snoopyAviador;
-Model woodstock;
+Model cuerpowoodstock;
+Model alaDerecha;
+Model alaIzquierda;
 
 //Variables para modelos del arco
 Model arcoLetrero;
-Model puertaDerecha;
-Model puertaIzquierda;
+Model puerta1;
+Model puerta2;
 
 //Skybox
 Skybox skybox;
@@ -204,8 +205,6 @@ SpotLight spotLights[MAX_SPOT_LIGHTS];
 SpotLight pointLightsOff[1];
 int camaraAnterior = -1; // Para saber la cámara anterior
 bool yaApagueEnPuestos = false; // Para saber si ya apagué en cámara puestos
-
-
 
 //Vertex Shader
 static const char* vShader = "shaders/shader_light.vert";
@@ -290,6 +289,18 @@ void CreateObjects()
 		0.0f, 0.5f, -0.5f,		0.0f, 1.0f,		0.0f, 0.0f, 0.0f,
 	};
 
+	unsigned int numeroIndices[] = {
+		0, 1, 2,
+		0, 2, 3,
+	};
+
+	GLfloat letreroVertices[] = {
+		-0.5f, 0.0f, 0.5f,		0.01f, 0.81f,		0.0f, -1.0f, 0.0f,
+		0.5f, 0.0f, 0.5f,		0.18f, 0.81f,		0.0f, -1.0f, 0.0f,
+		0.5f, 0.0f, -0.5f,		0.18f, 0.98f,		0.0f, -1.0f, 0.0f,
+		-0.5f, 0.0f, -0.5f,		0.01f, 0.98f,		0.0f, -1.0f, 0.0f,
+	};
+
 	Mesh* obj1 = new Mesh();
 	obj1->CreateMesh(vertices, indices, 32, 12);
 	meshList.push_back(obj1);
@@ -305,6 +316,10 @@ void CreateObjects()
 	Mesh* obj4 = new Mesh();
 	obj4->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
 	meshList.push_back(obj4);
+
+	Mesh* obj5 = new Mesh();
+	obj5->CreateMesh(letreroVertices, numeroIndices, 32, 6);
+	meshList.push_back(obj5);
 
 	calcAverageNormals(indices, 12, vertices, 32, 8, 5);
 
@@ -335,7 +350,6 @@ void CrearDado()
 		// right
 		4, 5, 6,
 		6, 7, 4,
-
 	};
 
 	GLfloat cubo_vertices[] = {
@@ -383,6 +397,7 @@ void CrearDado()
 	dado->CreateMesh(cubo_vertices, cubo_indices, 192, 36);
 	meshList.push_back(dado);
 }
+
 
 void CreateShaders()
 {
@@ -433,7 +448,7 @@ int main()
 	tierraTexture.LoadTextureA();
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
-	letreroTexture = Texture("Textures/letrero.jpg");
+	letreroTexture = Texture("Textures/letrero.png");
 	letreroTexture.LoadTextureA();
 
 	//Carga de modelos del puesto de lanzamiento de hacha
@@ -551,7 +566,7 @@ int main()
 	helados.LoadModel("Models/helados.obj");
 	algodones = Model();
 	algodones.LoadModel("Models/algodones.obj");
-	
+
 	//Carga de modelos de NPCs
 	snoopy = Model();
 	snoopy.LoadModel("Models/snoopy.obj");
@@ -561,24 +576,26 @@ int main()
 	charlie.LoadModel("Models/Charlie.obj");
 
 	//Carga de modelos de la Zona de fotos
-	casaSnoopy = Model();
-	casaSnoopy.LoadModel("Models/casaSnoopy.obj");
+	casaConSnoopy = Model();
+	casaConSnoopy.LoadModel("Models/casaConSnoopy.obj");
 	gumball = Model();
 	gumball.LoadModel("Models/gumball.obj");
 	yoshi = Model();
 	yoshi.LoadModel("Models/yoshi.obj");
-	snoopyAviador = Model();
-	snoopyAviador.LoadModel("Models/snoopyAviador.obj");
-	woodstock = Model();
-	woodstock.LoadModel("Models/woodstock.obj");
+	cuerpowoodstock = Model();
+	cuerpowoodstock.LoadModel("Models/cuerpowoodstock.obj");
+	alaDerecha = Model();
+	alaDerecha.LoadModel("Models/alaDerecha.obj");
+	alaIzquierda = Model();
+	alaIzquierda.LoadModel("Models/alaIzquierda.obj");
 
 	//Carga de modelos del arco
 	arcoLetrero = Model();
 	arcoLetrero.LoadModel("Models/arco.obj");
-	puertaDerecha = Model();
-	puertaDerecha.LoadModel("Models/puertaDerecha.obj");
-	puertaIzquierda = Model();
-	puertaIzquierda.LoadModel("Models/puertaIzquierda.obj");
+	puerta1 = Model();
+	puerta1.LoadModel("Models/puerta1.obj");
+	puerta2 = Model();
+	puerta2.LoadModel("Models/puerta2.obj");
 
 	//push_back de modelos del puesto de lanzamiento de hacha
 	objetosHacha.push_back(&Stand1);
@@ -655,26 +672,38 @@ int main()
 	personajesNPCs.push_back(&charlie);
 
 	//push_back de modelos de la zona de fotos
-	objetosZonaFotos.push_back(&casaSnoopy);
+	objetosZonaFotos.push_back(&casaConSnoopy);
 	objetosZonaFotos.push_back(&gumball);
 	objetosZonaFotos.push_back(&yoshi);
-	objetosZonaFotos.push_back(&snoopyAviador);
-	objetosZonaFotos.push_back(&woodstock);
+	objetosZonaFotos.push_back(&cuerpowoodstock);
+	objetosZonaFotos.push_back(&alaDerecha);
+	objetosZonaFotos.push_back(&alaIzquierda);
+
+
 
 	//push_back de modelos del arco
 	objetosArco.push_back(&arcoLetrero);
-	objetosArco.push_back(&puertaDerecha);
-	objetosArco.push_back(&puertaIzquierda);
+	objetosArco.push_back(&puerta1);
+	objetosArco.push_back(&puerta2);
 
 	//Skybox
 	std::vector<std::string> skyboxFaces;
 
+	//Día
 	skyboxFaces.push_back("Textures/Skybox/right.tga");
 	skyboxFaces.push_back("Textures/Skybox/left.tga");
 	skyboxFaces.push_back("Textures/Skybox/down.tga");
 	skyboxFaces.push_back("Textures/Skybox/up.tga");
 	skyboxFaces.push_back("Textures/Skybox/front.tga");
 	skyboxFaces.push_back("Textures/Skybox/back.tga");
+
+	//Noche
+	//skyboxFaces.push_back("Textures/Skybox/right_night.tga");
+	//skyboxFaces.push_back("Textures/Skybox/left_night.tga");
+	//skyboxFaces.push_back("Textures/Skybox/down_night.tga");
+	//skyboxFaces.push_back("Textures/Skybox/up_night.tga");
+	//skyboxFaces.push_back("Textures/Skybox/front_night.tga");
+	//skyboxFaces.push_back("Textures/Skybox/back_night.tga");
 
 	skybox = Skybox(skyboxFaces);
 
@@ -686,15 +715,15 @@ int main()
 	//mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
 	//	0.3f, 0.3f,
 	//	0.0f, 0.0f, -1.0f);
-	
+
 	unsigned int pointLightCount = 0;  //Contador de luces puntuales
 
 	//Empiezan luces de los postes
-	
+
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,   //luz primer poste
 		2.0f, 0.5f,
 		115.0f, 35.0f, -70.0f,
-		1.0f,	0.022f,	0.0019f);
+		1.0f, 0.022f, 0.0019f);
 	pointLightCount++;
 
 	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,   //luz segundo poste			115.0f, -1.0f, 77.0
@@ -702,14 +731,14 @@ int main()
 		115.0f, 35.0f, 70.0f,
 		1.0f, 0.022f, 0.0019f);
 	pointLightCount++;
-	
+
 	pointLights[2] = PointLight(1.0f, 1.0f, 1.0f,   //luz tercer poste			-15.0f, -1.0f, -77.0f
 		2.0f, 0.5f,
 		-15.0f, 35.0f, -70.0f,
 		1.0f, 0.022f, 0.0019f);
 	pointLightCount++;
 
-	
+
 	pointLights[3] = PointLight(1.0f, 1.0f, 1.0f,   //luz cuarto poste			-15.0f, -1.0f, 77.0f
 		2.0f, 0.5f,
 		-15.0f, 35.0f, 70.0f,
@@ -727,12 +756,12 @@ int main()
 		-145.0f, 35.0f, 70.0f,
 		1.0f, 0.022f, 0.0019f);
 	pointLightCount++;
-	
+
 	// Empiezan spotLights     hacha
-	
+
 	unsigned int spotLightCount = 0;
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz bateo
-		2.0f, 5.0f,		
+		2.0f, 5.0f,
 		-80.2f, 50.3f, -140.0f,	//Posicion
 		0.0f, -1.0f, 0.0f,		//A donde apunta			0.0f, 0.1f, 0.0f
 		0.0f, 0.08f, 0.0f,		//coeficientes
@@ -742,9 +771,9 @@ int main()
 	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz dardos
 		2.0f, 5.0f,
 		49.9f, 50.3f, -140.0f,
-		0.0f, -1.0f, 0.0f,		
-		0.0f, 0.08f, 0.0f,		
-		30.0f);					
+		0.0f, -1.0f, 0.0f,
+		0.0f, 0.08f, 0.0f,
+		30.0f);
 	spotLightCount++;
 
 	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz dados
@@ -780,13 +809,14 @@ int main()
 	spotLightCount++;
 
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
-		uniformSpecularIntensity = 0, uniformShininess = 0;
+		uniformSpecularIntensity = 0, uniformShininess = 0, uniformTextureOffset = 0;
 	GLuint uniformColor = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 1000.0f);
 
 	glm::mat4 model(1.0);
 	glm::mat4 modelaux(1.0);
 	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec2 toffset = glm::vec2(0.0f, 0.0f);
 	glm::vec3 posicionModelo = glm::vec3(-90.0f, -1.0f, 0.0f); // posición inicial de Modelos
 
 	//Loop mientras no se cierra la ventana
@@ -799,7 +829,7 @@ int main()
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
-		
+
 		int camaraActual = mainWindow.getCamaraActiva();
 
 		// --- Si estoy en cámara aérea, apagar luces SIEMPRE
@@ -824,7 +854,6 @@ int main()
 
 		// Guardar la cámara actual para comparar en el siguiente frame
 		camaraAnterior = camaraActual;
-
 
 		//variables para control de camara y personajes
 		glm::vec3 cameraPos = camera.getCameraPosition();
@@ -924,6 +953,7 @@ int main()
 		uniformView = shaderList[0].GetViewLocation();
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
+		uniformTextureOffset = shaderList[0].getOffsetLocation();
 
 		//Información en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
@@ -936,7 +966,6 @@ int main()
 			activeCamera->getCameraPosition().y,
 			activeCamera->getCameraPosition().z);
 
-		
 		//Bloque para control de lamparas y cuales se envian al shader
 		SpotLight spotLightsToSend[MAX_SPOT_LIGHTS];
 		unsigned int activeSpotLights = 0;
@@ -946,7 +975,6 @@ int main()
 			}
 		}
 		shaderList[0].SetSpotLights(spotLightsToSend, activeSpotLights);
-
 
 		//Bloque para ciclo de día y de noche 
 		if (esDeDia) {
@@ -973,7 +1001,7 @@ int main()
 		if (intensidad <= 0.09) {
 			shaderList[0].SetPointLights(pointLights, pointLightCount);      // lámpara encendida
 		}
-		else if (intensidad >= 0.3){
+		else if (intensidad >= 0.3) {
 			shaderList[0].SetPointLights(pointLightsOff, 0);  // lámpara apagada
 		}
 
@@ -1007,7 +1035,7 @@ int main()
 
 		//Redenrizado del puesto de golpea al topo
 		topos(model, uniformModel, objetosTopos);
-		
+
 		////Redenrizado de ambientación
 		ambientacion(model, uniformModel, objetosAmbientacion);
 
@@ -1018,10 +1046,10 @@ int main()
 		NPCs(model, uniformModel, personajesNPCs);
 
 		//Renderizado de zona de fotos
-		zonaFotos(model, uniformModel, objetosZonaFotos);
+		zonaFotos(model, uniformModel, objetosZonaFotos, deltaTime);
 
-		//Renderizado de zona de fotos
-		arco(model, uniformModel, objetosArco);
+		//Renderizado del arco
+		arco(model, uniformModel, uniformTextureOffset, objetosArco, deltaTime, letreroTexture, meshList);
 
 		//Renderizado de personajes principales  
 		//(Para utilizar un personaje distinto comenta el personaje actual y descomenta el que quieras usar)
@@ -1032,7 +1060,7 @@ int main()
 		//model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
 		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//gumball.RenderModel();
-		
+
 		////yoshi
 		//model = glm::mat4(1.0);
 		//model = glm::translate(model, posicionModelo);
@@ -1040,7 +1068,7 @@ int main()
 		//model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
 		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//yoshi.RenderModel();
-		
+
 		//snoopy
 		model = glm::mat4(1.0);
 		model = glm::translate(model, posicionModelo);
