@@ -63,6 +63,9 @@ bool esDeDia = true;
 float intensidad = 0.5f;  //Inicia de día
 float velocidad = 0.0005f; //Velocidad de cambio de luz //valor original: 0.00005
 
+//Variables para animacion de avatar
+float angulovaria = 0.0f;
+
 Window mainWindow;
 
 //Listas
@@ -105,6 +108,7 @@ Model bardaBateo;
 Model objetivoBateo;
 Model cartelBateo;
 Model bate;
+Model bolaBateo;
 
 //Variables para modelos del puesto de lanzamiento de dados
 Model Stand3;
@@ -177,6 +181,14 @@ Model gumball;
 Model yoshi;
 Model snoopyAviador;
 Model woodstock;
+
+//Variables para avatar principal
+Model brazoIzquierdoAvatar;
+Model brazoDerechoAvatar;
+Model piernaIzquierdaAvatar;
+Model piernaDerechaAvatar;
+Model cuerpoAvatar;
+Model gorraAvatar;
 
 //Variables para modelos del arco
 Model arcoLetrero;
@@ -433,7 +445,7 @@ int main()
 	tierraTexture.LoadTextureA();
 	tierraTexture = Texture("Textures/tierra.jpg");
 	tierraTexture.LoadTextureA();
-	letreroTexture = Texture("Textures/letrero.jpg");
+	letreroTexture = Texture("Textures/letrero.png");
 	letreroTexture.LoadTextureA();
 
 	//Carga de modelos del puesto de lanzamiento de hacha
@@ -455,6 +467,8 @@ int main()
 	cartelBateo.LoadModel("Models/cartelBateo.obj");
 	bate = Model();
 	bate.LoadModel("Models/bate.obj");
+	bolaBateo = Model();
+	bolaBateo.LoadModel("Models/bolaBateo.obj");
 
 	//Carga de modelos del puesto de dados
 	Stand3 = Model();
@@ -566,11 +580,25 @@ int main()
 	gumball = Model();
 	gumball.LoadModel("Models/gumball.obj");
 	yoshi = Model();
-	yoshi.LoadModel("Models/yoshi.obj");
+	yoshi.LoadModel("Models/yoshi.obj");  
 	snoopyAviador = Model();
 	snoopyAviador.LoadModel("Models/snoopyAviador.obj");
 	woodstock = Model();
 	woodstock.LoadModel("Models/woodstock.obj");
+
+	//Carga de modelos Avatar principal
+	brazoDerechoAvatar = Model();
+	brazoDerechoAvatar.LoadModel("Models/brazoDerechoAvatar.obj");
+	brazoIzquierdoAvatar = Model();
+	brazoIzquierdoAvatar.LoadModel("Models/brazoIzquierdoAvatar.obj");
+	piernaDerechaAvatar = Model();
+	piernaDerechaAvatar.LoadModel("Models/piernaDerechaAvatar.obj");
+	piernaIzquierdaAvatar = Model();
+	piernaIzquierdaAvatar.LoadModel("Models/piernaIzquierdaAvatar.obj");
+	cuerpoAvatar = Model();
+	cuerpoAvatar.LoadModel("Models/cuerpoAvatar.obj");
+	gorraAvatar = Model();
+	gorraAvatar.LoadModel("Models/gorraAvatar.obj");
 
 	//Carga de modelos del arco
 	arcoLetrero = Model();
@@ -593,6 +621,7 @@ int main()
 	objetosBateo.push_back(&objetivoBateo);
 	objetosBateo.push_back(&cartelBateo);
 	objetosBateo.push_back(&bate);
+	objetosBateo.push_back(&bolaBateo);
 
 	//push_back de modelos del puesto de dados
 	objetosDados.push_back(&Stand3);
@@ -716,19 +745,19 @@ int main()
 		1.0f, 0.022f, 0.0019f);
 	pointLightCount++;
 
-	pointLights[4] = PointLight(1.0f, 1.0f, 1.0f,   //luz cuarto poste			-145.0f, -1.0f, -77.0f
+	pointLights[4] = PointLight(1.0f, 1.0f, 1.0f,   //luz quinto poste			-145.0f, -1.0f, -77.0f
 		2.0f, 0.5f,
 		-145.0f, 35.0f, -70.0f,
 		1.0f, 0.022f, 0.0019f);
 	pointLightCount++;
 
-	pointLights[5] = PointLight(1.0f, 1.0f, 1.0f,   //luz cuarto poste			-145.0f, -1.0f, 77.0
+	pointLights[5] = PointLight(1.0f, 1.0f, 1.0f,   //luz sexto poste			-145.0f, -1.0f, 77.0
 		2.0f, 0.5f,
 		-145.0f, 35.0f, 70.0f,
 		1.0f, 0.022f, 0.0019f);
 	pointLightCount++;
 	
-	// Empiezan spotLights     hacha
+	// Empiezan spotLights   
 	
 	unsigned int spotLightCount = 0;
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,		//Luz bateo
@@ -792,10 +821,13 @@ int main()
 	//Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
+		bool avatarCaminando = false; //varibale para movimiento de avatar
 		GLfloat now = glfwGetTime();
 		deltaTime = now - lastTime;
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
+		angulovaria += 0.5f * deltaTime;
+
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -871,17 +903,26 @@ int main()
 		case 0: camera.mouseControl(xChange, yChange); camera.keyControl(mainWindow.getsKeys(), deltaTime); break;
 		case 1: aerialCamera.mouseControl(xChange, yChange); break;
 		case 2:
+			avatarCaminando = false;
 			terceraPersonaCamera.mouseControl(xChange, yChange);
 			glm::vec3 forward = glm::normalize(glm::vec3(terceraPersonaCamera.getCameraDirection().x, 0.0f, terceraPersonaCamera.getCameraDirection().z));
 			glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
-			if (mainWindow.getsKeys()[GLFW_KEY_W])
+			if (mainWindow.getsKeys()[GLFW_KEY_W]) {
 				posicionModelo += forward * deltaTime * 1.5f;
-			if (mainWindow.getsKeys()[GLFW_KEY_S])
+				avatarCaminando = true;
+			}
+			if (mainWindow.getsKeys()[GLFW_KEY_S]) {
 				posicionModelo -= forward * deltaTime * 1.5f;
-			if (mainWindow.getsKeys()[GLFW_KEY_A])
+				avatarCaminando = true;
+			}
+			if (mainWindow.getsKeys()[GLFW_KEY_A]) {
 				posicionModelo -= right * deltaTime * 1.5f;
-			if (mainWindow.getsKeys()[GLFW_KEY_D])
+				avatarCaminando = true;
+			}
+			if (mainWindow.getsKeys()[GLFW_KEY_D]) {
 				posicionModelo += right * deltaTime * 1.5f;
+				avatarCaminando = true;
+			}
 			break;
 		case 3:
 			camaraPuestos.mouseControl(xChange, yChange);
@@ -995,6 +1036,11 @@ int main()
 
 		//Redenrizado del puesto de jaula de bateo
 		bateo(model, uniformModel, objetosBateo);
+		actualizarBateo(0.05f);
+		if (mainWindow.getsKeys()[GLFW_KEY_Y]) {
+			lanzarBateo();
+		}
+
 
 		//Redenrizado del puesto de dados
 		dados(model, uniformModel, objetosDados);
@@ -1004,6 +1050,11 @@ int main()
 
 		////Redenrizado del puesto de bolos
 		bolos(model, uniformModel, objetosBolos);
+		actualizarBolos(0.05f);
+			//Animacion puesto de bolos
+		if (mainWindow.getsKeys()[GLFW_KEY_O]) {
+			lanzarBola();
+		}
 
 		//Redenrizado del puesto de golpea al topo
 		topos(model, uniformModel, objetosTopos);
@@ -1023,24 +1074,7 @@ int main()
 		//Renderizado de zona de fotos
 		arco(model, uniformModel, objetosArco);
 
-		//Renderizado de personajes principales  
-		//(Para utilizar un personaje distinto comenta el personaje actual y descomenta el que quieras usar)
-		////gumball
-		//model = glm::mat4(1.0);
-		//model = glm::translate(model, posicionModelo);
-		//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-		//model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
-		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//gumball.RenderModel();
-		
-		////yoshi
-		//model = glm::mat4(1.0);
-		//model = glm::translate(model, posicionModelo);
-		//model = glm::scale(model, glm::vec3(6.0f, 6.0f, 6.0f));
-		//model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
-		//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//yoshi.RenderModel();
-		
+		/*
 		//snoopy
 		model = glm::mat4(1.0);
 		model = glm::translate(model, posicionModelo);
@@ -1048,6 +1082,60 @@ int main()
 		model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		snoopy.RenderModel();
+		*/
+		
+
+		//Luigi (Avatar)
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 9.0f, 0.0f));
+		model = glm::translate(model, posicionModelo);
+		model = glm::scale(model, glm::vec3(6.0f, 6.0f, 6.0f));
+		model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cuerpoAvatar.RenderModel();
+
+		float anguloPiernas = avatarCaminando ? glm::radians(30.0f * sin(glm::radians(angulovaria * 12.0f))) : 0.0f;
+
+		// pierna derecha
+		modelaux = model;
+		model = glm::translate(model, glm::vec3(-0.14f, -0.69f, -0.005f));
+		model = glm::rotate(model, anguloPiernas, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		piernaDerechaAvatar.RenderModel();
+		model = modelaux;
+
+		// pierna izquierda
+		modelaux = model;
+		model = glm::translate(model, glm::vec3(0.14f, -0.729f, -0.025f));
+		model = glm::rotate(model, -anguloPiernas, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		piernaIzquierdaAvatar.RenderModel();
+		model = modelaux;
+
+		// brazo Derecho
+		modelaux = model;
+		model = glm::translate(model, glm::vec3(-0.201f, -0.209f, -0.090f));
+		model = glm::rotate(model, -anguloPiernas, glm::vec3(1.0f, 0.0f, 0.0f)); // animación
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		brazoDerechoAvatar.RenderModel();
+		model = modelaux;
+
+		// brazo izquierdo
+		modelaux = model;
+		model = glm::translate(model, glm::vec3(0.2131f, -0.22f, -0.106f));
+		model = glm::rotate(model, anguloPiernas, glm::vec3(1.0f, 0.0f, 0.0f)); // animación
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		brazoIzquierdoAvatar.RenderModel();
+		model = modelaux;
+
+
+		//gorra 
+		modelaux = model;
+		model = glm::translate(model, glm::vec3(0.0f,0.494f, -0.076f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		gorraAvatar.RenderModel();
+		model = modelaux;
 
 		glUseProgram(0);
 		mainWindow.swapBuffers();
