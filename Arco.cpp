@@ -7,7 +7,7 @@ GLfloat tiempoLetrero = 0.0;
 glm::vec2 toffset = glm::vec2(0.0f, 0.0f);
 int posicionLetrero = 0;
 int mensajeLetreroTamaño = 0;
-float angulovaria = 0.0f;
+static float angulovaria = 0.0f;
 
 //Animación puertas
 float anguloPuerta = 0.0f;
