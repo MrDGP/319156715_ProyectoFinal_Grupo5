@@ -14,5 +14,7 @@
 #include "Mesh.h"
 #include "Texture.h"
 #include "Model.h"
+#include "Material.h"
 
-void arco(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosArco);
+void arco(glm::mat4 model, GLuint uniformModel, GLuint uniformTextureOffset, std::vector<Model*> objetosArco, float deltaTime, Texture& letrero, std::vector<Mesh*> meshList);
+void inicializarMensajeLetrero();
