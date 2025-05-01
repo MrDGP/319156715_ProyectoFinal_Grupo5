@@ -100,3 +100,24 @@ void renderWario(glm::mat4 model, GLuint uniformModel, Model& wario, glm::vec3 p
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	wario.RenderModel();
 }
+
+
+//Renderizado de personajes principales  
+//(Para utilizar un personaje distinto comenta el personaje actual y descomenta el que quieras usar)
+////gumball
+//model = glm::mat4(1.0);
+//model = glm::translate(model, posicionModelo);
+//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+//model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
+//glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+//gumball.RenderModel();
+
+/*
+//yoshi
+model = glm::mat4(1.0);
+model = glm::translate(model, posicionModelo);
+model = glm::scale(model, glm::vec3(6.0f, 6.0f, 6.0f));
+model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
+glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+yoshi.RenderModel();
+*/
