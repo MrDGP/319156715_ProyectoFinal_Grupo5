@@ -182,6 +182,11 @@ Model yoshi;
 Model cuerpowoodstock;
 Model alaDerecha;
 Model alaIzquierda;
+Model piernaIzquierdaGumball;
+Model piernaDerechaGumball;
+Model brazoIzquierdoGumball;
+Model brazoDerechoGumball;
+Model colaGumball;
 
 //Variables para avatar principal
 Model brazoIzquierdoAvatar;
@@ -197,7 +202,8 @@ Model puerta1;
 Model puerta2;
 
 //Skybox
-Skybox skybox;
+Skybox skyboxDia;
+Skybox skyboxNoche;
 
 //Materiales
 Material Material_brillante;
@@ -615,6 +621,16 @@ int main()
 	alaIzquierda = Model();
 	alaIzquierda.LoadModel("Models/alaIzquierda.obj");
 
+	brazoDerechoGumball = Model();
+	brazoDerechoGumball.LoadModel("Models/brazoDerechoGumball.obj");
+	brazoIzquierdoGumball = Model();
+	brazoIzquierdoGumball.LoadModel("Models/brazoIzquierdoGumball.obj");
+	piernaDerechaGumball = Model();
+	piernaDerechaGumball.LoadModel("Models/piernaDerechaGumball.obj");
+	piernaIzquierdaGumball = Model();
+	piernaIzquierdaGumball.LoadModel("Models/piernaIzquierdaGumball.obj");
+	colaGumball = Model();
+	colaGumball.LoadModel("Models/colaGumball.obj");
 
 	//Carga de modelos Avatar principal
 	brazoDerechoAvatar = Model();
@@ -726,6 +742,11 @@ int main()
 	objetosZonaFotos.push_back(&cuerpowoodstock);
 	objetosZonaFotos.push_back(&alaDerecha);
 	objetosZonaFotos.push_back(&alaIzquierda);
+	objetosZonaFotos.push_back(&brazoDerechoGumball);
+	objetosZonaFotos.push_back(&brazoIzquierdoGumball);
+	objetosZonaFotos.push_back(&piernaDerechaGumball);
+	objetosZonaFotos.push_back(&piernaIzquierdaGumball);
+	objetosZonaFotos.push_back(&colaGumball);
 
 	//push_back de modelos del arco
 	objetosArco.push_back(&arcoLetrero);
@@ -733,25 +754,28 @@ int main()
 	objetosArco.push_back(&puerta2);
 
 	//Skybox
-	std::vector<std::string> skyboxFaces;
-
+	// 
 	//Día
-	skyboxFaces.push_back("Textures/Skybox/right.tga");
-	skyboxFaces.push_back("Textures/Skybox/left.tga");
-	skyboxFaces.push_back("Textures/Skybox/down.tga");
-	skyboxFaces.push_back("Textures/Skybox/up.tga");
-	skyboxFaces.push_back("Textures/Skybox/front.tga");
-	skyboxFaces.push_back("Textures/Skybox/back.tga");
+	std::vector<std::string> skyboxFacesDia = {
+	"Textures/Skybox/right.tga",
+	"Textures/Skybox/left.tga",
+	"Textures/Skybox/down.tga",
+	"Textures/Skybox/up.tga",
+	"Textures/Skybox/front.tga",
+	"Textures/Skybox/back.tga"
+	};
+	skyboxDia = Skybox(skyboxFacesDia);
 
 	//Noche
-	//skyboxFaces.push_back("Textures/Skybox/right_night.tga");
-	//skyboxFaces.push_back("Textures/Skybox/left_night.tga");
-	//skyboxFaces.push_back("Textures/Skybox/down_night.tga");
-	//skyboxFaces.push_back("Textures/Skybox/up_night.tga");
-	//skyboxFaces.push_back("Textures/Skybox/front_night.tga");
-	//skyboxFaces.push_back("Textures/Skybox/back_night.tga");
-
-	skybox = Skybox(skyboxFaces);
+	std::vector<std::string> skyboxFacesNoche = {
+		"Textures/Skybox/right_night.tga",
+		"Textures/Skybox/left_night.tga",
+		"Textures/Skybox/down_night.tga",
+		"Textures/Skybox/up_night.tga",
+		"Textures/Skybox/front_night.tga",
+		"Textures/Skybox/back_night.tga"
+	};
+	skyboxNoche = Skybox(skyboxFacesNoche);
 
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
@@ -862,7 +886,7 @@ int main()
 	glm::mat4 modelaux(1.0);
 	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 	glm::vec2 toffset = glm::vec2(0.0f, 0.0f);
-	glm::vec3 posicionModelo = glm::vec3(-90.0f, -1.0f, 0.0f); // posición inicial de Modelos
+	glm::vec3 posicionModelo = glm::vec3(280.0f, -1.0f, 0.0f); // posición inicial de Modelos 260.0f, -1.0f, 0.0f
 
 	//Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -1003,7 +1027,20 @@ int main()
 		//Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+
+		if (intensidad <= 0.09f) {
+			skyboxNoche.DrawSkybox(activeCamera->calculateViewMatrix(), projection);
+			//usandoSkyboxNoche = true;
+		}
+		else if (intensidad >= 0.4f) {
+			skyboxDia.DrawSkybox(activeCamera->calculateViewMatrix(), projection);
+			//usandoSkyboxNoche = false;
+		}
+		else {
+			skyboxNoche.DrawSkybox(activeCamera->calculateViewMatrix(), projection);
+		}
+
+		
 		shaderList[0].UseShader();
 		uniformModel = shaderList[0].GetModelLocation();
 		uniformProjection = shaderList[0].GetProjectionLocation();
@@ -1058,7 +1095,7 @@ int main()
 		if (intensidad <= 0.09) {
 			shaderList[0].SetPointLights(pointLights, pointLightCount);      // lámpara encendida
 		}
-		else if (intensidad >= 0.3) {
+		else if (intensidad >= 0.3 ) {
 			shaderList[0].SetPointLights(pointLightsOff, 0);  // lámpara apagada
 		}
 
@@ -1091,6 +1128,11 @@ int main()
 
 		//Redenrizado del puesto de dados
 		dados(model, uniformModel, objetosDados);
+		actualizarDados(0.01f);
+		if (mainWindow.getsKeys()[GLFW_KEY_U]) {
+			lanzarDados();
+		}
+
 
 		//Redenrizado del puesto de dardos
 		dardos(model, uniformModel, objetosDardos);
