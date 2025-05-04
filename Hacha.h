@@ -14,4 +14,7 @@
 #include"Model.h"
 
 void hacha(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetosHacha);
-void renderStand(glm::mat4 model, GLuint uniformModel, Model &stand, Model &hacha, Model &reja, Model &tabla, Model &objetivo, glm::vec3 posicion);
+void renderStand(glm::mat4 model, GLuint uniformModel, Model &stand, Model &reja, Model &tabla, glm::vec3 posicion);
+void renderHachas(glm::mat4 model, GLuint uniformModel, Model& hacha, glm::vec3 posicion);
+void renderObjetivos(glm::mat4 model, GLuint uniformModel, Model& objetivo, glm::vec3 posicion);
+void lanzarHacha();

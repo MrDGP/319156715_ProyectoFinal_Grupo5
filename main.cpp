@@ -1077,6 +1077,9 @@ int main()
 
 		//Redenrizado del puesto de lanzamiento de hacha
 		hacha(model, uniformModel, objetosHacha);
+		if (mainWindow.getsKeys()[GLFW_KEY_T]) {
+			lanzarHacha();
+		}
 
 		//Redenrizado del puesto de jaula de bateo
 		bateo(model, uniformModel, objetosBateo);
@@ -1091,17 +1094,24 @@ int main()
 
 		//Redenrizado del puesto de dardos
 		dardos(model, uniformModel, objetosDardos);
+		actualizarDardos(0.05f);
+		if (mainWindow.getsKeys()[GLFW_KEY_I]) {
+			lanzarDardo();
+		}
 
 		////Redenrizado del puesto de bolos
 		bolos(model, uniformModel, objetosBolos);
 		actualizarBolos(0.05f);
-			//Animacion puesto de bolos
 		if (mainWindow.getsKeys()[GLFW_KEY_O]) {
 			lanzarBola();
 		}
 
 		//Redenrizado del puesto de golpea al topo
 		topos(model, uniformModel, objetosTopos);
+		actualizarTopos(0.05f);
+		if (mainWindow.getsKeys()[GLFW_KEY_P]) {
+			activarTopos();
+		}
 
 		////Redenrizado de ambientación
 		ambientacion(model, uniformModel, objetosAmbientacion);
@@ -1118,8 +1128,8 @@ int main()
 		//Renderizado del arco
 		arco(model, uniformModel, uniformTextureOffset, objetosArco, deltaTime, letreroTexture, meshList);
 
-		//Luigi (Avatar)
 
+		//Luigi (Avatar)
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 9.0f, 0.0f));
 		model = glm::translate(model, posicionModelo);
@@ -1127,9 +1137,7 @@ int main()
 		model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cuerpoAvatar.RenderModel();
-
 		float anguloPiernas = avatarCaminando ? glm::radians(30.0f * sin(glm::radians(angulovaria * 12.0f))) : 0.0f;
-
 		// pierna derecha
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(-0.14f, -0.69f, -0.005f));
@@ -1137,7 +1145,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piernaDerechaAvatar.RenderModel();
 		model = modelaux;
-
 		// pierna izquierda
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(0.14f, -0.729f, -0.025f));
@@ -1145,7 +1152,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piernaIzquierdaAvatar.RenderModel();
 		model = modelaux;
-
 		// brazo Derecho
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(-0.201f, -0.209f, -0.090f));
@@ -1153,7 +1159,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		brazoDerechoAvatar.RenderModel();
 		model = modelaux;
-
 		// brazo izquierdo
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(0.2131f, -0.22f, -0.106f));
@@ -1161,8 +1166,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		brazoIzquierdoAvatar.RenderModel();
 		model = modelaux;
-
-
 		//gorra 
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(0.0f,0.494f, -0.076f));
