@@ -588,6 +588,18 @@ int main()
 	peppermint.LoadModel("Models/Peppermint.obj");
 	charlie = Model();
 	charlie.LoadModel("Models/Charlie.obj");
+	carrie = Model();
+	carrie.LoadModel("Models/carrie.obj");
+	teri = Model();
+	teri.LoadModel("Models/teri.obj");
+	bowser = Model();
+	bowser.LoadModel("Models/bowser.obj");
+	kingBoo = Model();
+	kingBoo.LoadModel("Models/kingBoo.obj");
+	donkeyKong = Model();
+	donkeyKong.LoadModel("Models/donkeyKong.obj");
+	wario = Model();
+	wario.LoadModel("Models/wario.obj");
 
 	//Carga de modelos de la Zona de fotos
 	casaConSnoopy = Model();
@@ -700,6 +712,12 @@ int main()
 	personajesNPCs.push_back(&snoopy);
 	personajesNPCs.push_back(&peppermint);
 	personajesNPCs.push_back(&charlie);
+	personajesNPCs.push_back(&carrie);
+	personajesNPCs.push_back(&teri);
+	personajesNPCs.push_back(&bowser);
+	personajesNPCs.push_back(&kingBoo);
+	personajesNPCs.push_back(&donkeyKong);
+	personajesNPCs.push_back(&wario);
 
 	//push_back de modelos de la zona de fotos
 	objetosZonaFotos.push_back(&casaConSnoopy);
@@ -708,8 +726,6 @@ int main()
 	objetosZonaFotos.push_back(&cuerpowoodstock);
 	objetosZonaFotos.push_back(&alaDerecha);
 	objetosZonaFotos.push_back(&alaIzquierda);
-
-
 
 	//push_back de modelos del arco
 	objetosArco.push_back(&arcoLetrero);
