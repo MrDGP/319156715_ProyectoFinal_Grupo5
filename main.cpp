@@ -594,6 +594,18 @@ int main()
 	peppermint.LoadModel("Models/Peppermint.obj");
 	charlie = Model();
 	charlie.LoadModel("Models/Charlie.obj");
+	carrie = Model();
+	carrie.LoadModel("Models/carrie.obj");
+	teri = Model();
+	teri.LoadModel("Models/teri.obj");
+	bowser = Model();
+	bowser.LoadModel("Models/bowser.obj");
+	kingBoo = Model();
+	kingBoo.LoadModel("Models/kingBoo.obj");
+	donkeyKong = Model();
+	donkeyKong.LoadModel("Models/donkeyKong.obj");
+	wario = Model();
+	wario.LoadModel("Models/wario.obj");
 
 	//Carga de modelos de la Zona de fotos
 	casaConSnoopy = Model();
@@ -716,6 +728,12 @@ int main()
 	personajesNPCs.push_back(&snoopy);
 	personajesNPCs.push_back(&peppermint);
 	personajesNPCs.push_back(&charlie);
+	personajesNPCs.push_back(&carrie);
+	personajesNPCs.push_back(&teri);
+	personajesNPCs.push_back(&bowser);
+	personajesNPCs.push_back(&kingBoo);
+	personajesNPCs.push_back(&donkeyKong);
+	personajesNPCs.push_back(&wario);
 
 	//push_back de modelos de la zona de fotos
 	objetosZonaFotos.push_back(&casaConSnoopy);
@@ -724,13 +742,11 @@ int main()
 	objetosZonaFotos.push_back(&cuerpowoodstock);
 	objetosZonaFotos.push_back(&alaDerecha);
 	objetosZonaFotos.push_back(&alaIzquierda);
-
 	objetosZonaFotos.push_back(&brazoDerechoGumball);
 	objetosZonaFotos.push_back(&brazoIzquierdoGumball);
 	objetosZonaFotos.push_back(&piernaDerechaGumball);
 	objetosZonaFotos.push_back(&piernaIzquierdaGumball);
 	objetosZonaFotos.push_back(&colaGumball);
-
 
 	//push_back de modelos del arco
 	objetosArco.push_back(&arcoLetrero);
@@ -1098,6 +1114,9 @@ int main()
 
 		//Redenrizado del puesto de lanzamiento de hacha
 		hacha(model, uniformModel, objetosHacha);
+		if (mainWindow.getsKeys()[GLFW_KEY_T]) {
+			lanzarHacha();
+		}
 
 		//Redenrizado del puesto de jaula de bateo
 		bateo(model, uniformModel, objetosBateo);
@@ -1117,17 +1136,24 @@ int main()
 
 		//Redenrizado del puesto de dardos
 		dardos(model, uniformModel, objetosDardos);
+		actualizarDardos(0.05f);
+		if (mainWindow.getsKeys()[GLFW_KEY_I]) {
+			lanzarDardo();
+		}
 
 		////Redenrizado del puesto de bolos
 		bolos(model, uniformModel, objetosBolos);
 		actualizarBolos(0.05f);
-			//Animacion puesto de bolos
 		if (mainWindow.getsKeys()[GLFW_KEY_O]) {
 			lanzarBola();
 		}
 
 		//Redenrizado del puesto de golpea al topo
 		topos(model, uniformModel, objetosTopos);
+		actualizarTopos(0.05f);
+		if (mainWindow.getsKeys()[GLFW_KEY_P]) {
+			activarTopos();
+		}
 
 		////Redenrizado de ambientación
 		ambientacion(model, uniformModel, objetosAmbientacion);
@@ -1144,8 +1170,8 @@ int main()
 		//Renderizado del arco
 		arco(model, uniformModel, uniformTextureOffset, objetosArco, deltaTime, letreroTexture, meshList);
 
-		//Luigi (Avatar)
 
+		//Luigi (Avatar)
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 9.0f, 0.0f));
 		model = glm::translate(model, posicionModelo);
@@ -1153,9 +1179,7 @@ int main()
 		model = glm::rotate(model, angulo, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		cuerpoAvatar.RenderModel();
-
 		float anguloPiernas = avatarCaminando ? glm::radians(30.0f * sin(glm::radians(angulovaria * 12.0f))) : 0.0f;
-
 		// pierna derecha
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(-0.14f, -0.69f, -0.005f));
@@ -1163,7 +1187,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piernaDerechaAvatar.RenderModel();
 		model = modelaux;
-
 		// pierna izquierda
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(0.14f, -0.729f, -0.025f));
@@ -1171,7 +1194,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piernaIzquierdaAvatar.RenderModel();
 		model = modelaux;
-
 		// brazo Derecho
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(-0.201f, -0.209f, -0.090f));
@@ -1179,7 +1201,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		brazoDerechoAvatar.RenderModel();
 		model = modelaux;
-
 		// brazo izquierdo
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(0.2131f, -0.22f, -0.106f));
@@ -1187,8 +1208,6 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		brazoIzquierdoAvatar.RenderModel();
 		model = modelaux;
-
-
 		//gorra 
 		modelaux = model;
 		model = glm::translate(model, glm::vec3(0.0f,0.494f, -0.076f));
