@@ -1176,7 +1176,7 @@ int main()
 		NPCs(model, uniformModel, personajesNPCs);
 
 		//Renderizado de zona de fotos
-		zonaFotos(model, uniformModel, objetosZonaFotos, 0.05f);
+		zonaFotos(model, uniformModel, objetosZonaFotos, deltaTime);
 
 		//Renderizado del arco
 		arco(model, uniformModel, uniformTextureOffset, objetosArco, deltaTime, letreroTexture, meshList);

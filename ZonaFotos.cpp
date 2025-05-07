@@ -26,10 +26,14 @@ static float angBrazoYoshi = 0.0f;
 static float angGiroYoshi = 0.0f;
 static float angPatasYoshi = 0.0f;
 static float movYoshi = 0.0f;
-static float offsetYoshi = 0.08f;
 static bool avanzaYoshi = true;
-static float tiempoBrazo = 0.0f;
 static bool movBrazo = false;
+static float tiempoBrazo = 0.0f;
+static float velocidadYoshi = 0.02f;
+static float frecuenciaSaltoYoshi = 2.5f;
+static float amplitudSaltoYoshi = 3.5f;
+static float frecuenciaPatasYoshi = 8.0f;
+static float saltoYoshi;
 
 //Variables para animación de Woodstock
 float vuelaWoodstock = 0.0f;
@@ -53,19 +57,25 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	snoopyZ = amplitud * cos(velocidadSnoopy * vuelaSnoopy);
 
 	//Ida y vuelta Snoopy
+	if (movSnoopy < -100.0f) {
+		movSnoopy = -100.0f;
+	}
+	if (movSnoopy > 100.0f) {
+		movSnoopy = 100.0f;
+	}
 
 	if (movSnoopy > -100.0f && avanzaSnoopy == true) {
-		movSnoopy -= movOffsetSnoopy;
+		movSnoopy -= movOffsetSnoopy * deltaTime;
 	}
-	else if (movSnoopy < -100.0f) {
-		movSnoopy += movOffsetSnoopy;
+	else if (movSnoopy <= -100.0f) {
+		movSnoopy += movOffsetSnoopy * deltaTime;
 		avanzaSnoopy = false;
 	}
 	else if (movSnoopy < 5.0f && avanzaSnoopy == false) {
-		movSnoopy += movOffsetSnoopy;
+		movSnoopy += movOffsetSnoopy * deltaTime;
 	}
 	else {
-		movSnoopy -= movOffsetSnoopy;
+		movSnoopy -= movOffsetSnoopy * deltaTime;
 		avanzaSnoopy = true;
 	}
 
@@ -161,42 +171,39 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 
 	//------------------------------------------------------------------------------------------------------------------
 	//Yoshi
-	float saltoYoshi = fabs(3.5f * sin(glm::radians(angSaltoYoshi * 2.5f)));
-	angSaltoYoshi += 30.0f * deltaTime;
-	angPatasYoshi = glm::radians(25.0f * sin(glm::radians(angSaltoYoshi * 8.0f)));
-	// Movimiento horizontal
-	if (movYoshi < 20.0f && avanzaYoshi) {
-		movYoshi += offsetYoshi;
-		if (movYoshi >= 20.0f && !movBrazo) {
-			movBrazo = true;
-			tiempoBrazo = 0.0f;
-		}
-	}
-	else {
-		avanzaYoshi = false;
-	}
+	saltoYoshi = fabs(amplitudSaltoYoshi * sin(glm::radians(angSaltoYoshi * frecuenciaSaltoYoshi)));
+	angSaltoYoshi += 2.0f * deltaTime;
+	angPatasYoshi = glm::radians(25.0f * sin(glm::radians(angSaltoYoshi * frecuenciaPatasYoshi)));
 
-	if (movYoshi > -20.0f && !avanzaYoshi) {
-		movYoshi -= offsetYoshi;
-		if (movYoshi <= -20.0f && !movBrazo) {
+	if (avanzaYoshi) {
+		movYoshi += 4.0f * velocidadYoshi * deltaTime;
+		if (movYoshi >= 20.0f) {
+			movYoshi = 20.0f;
+			avanzaYoshi = false;
 			movBrazo = true;
 			tiempoBrazo = 0.0f;
 		}
 	}
 	else {
-		avanzaYoshi = true;
+		movYoshi -= 4.0f * velocidadYoshi * deltaTime;
+		if (movYoshi <= -20.0f) {
+			movYoshi = -20.0f;
+			avanzaYoshi = true;
+			movBrazo = true;
+			tiempoBrazo = 0.0f;
+		}
 	}
 
 	if (movBrazo) {
-		tiempoBrazo += deltaTime;
+		tiempoBrazo += velocidadYoshi * deltaTime;
 
-		if (movBrazo < 1.0f) {
+		if (tiempoBrazo < 1.0f) {
 			angBrazoYoshi = -180.0f * (tiempoBrazo / 1.0f);
 			angGiroYoshi = 360.0f * (tiempoBrazo / 2.0f);
 		}
 		else if (tiempoBrazo < 2.0f) {
 			angBrazoYoshi = -180.0f * (1.0f - (tiempoBrazo - 1.0f) / 1.0f);
-			angGiroYoshi = 360.0f * (tiempoBrazo / 2.0f); 
+			angGiroYoshi = 360.0f * (tiempoBrazo / 2.0f);
 		}
 		else {
 			angBrazoYoshi = 0.0f;
@@ -220,34 +227,34 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[2]->RenderModel();
 
-	//YoshiManoDerecha
+	//Mano derecha
 	model = glm::translate(model, glm::vec3(-0.22f, 0.0f, 0.0f));
 	modelaux = model;
 	model = glm::rotate(model, glm::radians(angBrazoYoshi), glm::vec3(1.0f, 0.0f, 0.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[11]->RenderModel();
-	//YoshiManoIzquierda
+
+	//Mano izquierda
 	model = modelaux;
 	model = glm::translate(model, glm::vec3(0.431f, 0.005f, 0.0f));
 	modelaux = model;
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[12]->RenderModel();
 
-	//YoshiPataDerecha
+	//Pata derecha
 	model = modelaux;
 	model = glm::translate(model, glm::vec3(-0.48f, -0.595f, -0.06f));
 	modelaux = model;
 	model = glm::rotate(model, angPatasYoshi, glm::vec3(1.0f, 0.0f, 0.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[13]->RenderModel();
-	//YoshiPataIzquierda
+
+	//Pata izquierda
 	model = modelaux;
 	model = glm::translate(model, glm::vec3(0.52f, 0.006f, 0.02f));
 	model = glm::rotate(model, -angPatasYoshi, glm::vec3(1.0f, 0.0f, 0.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[14]->RenderModel();
-
-
 
 	//--------------------------------------------------------------------------------------------------------------------
 	//Woodstock
