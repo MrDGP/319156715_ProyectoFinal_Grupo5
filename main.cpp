@@ -12,9 +12,6 @@
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
-//para probar el importer
-//#include<assimp/Importer.hpp>
-
 #include "Window.h"
 #include "Mesh.h"
 #include "Shader_light.h"
@@ -84,7 +81,6 @@ std::vector<Model*> objetosZonaFotos;
 std::vector<Model*> objetosArco;
 
 //Camaras 
-Camera camera;
 Camera aerialCamera;
 Camera terceraPersonaCamera;
 Camera camaraPuestos;
@@ -433,10 +429,7 @@ int main()
 	CrearDado();
 	CreateShaders();
 
-	//Camara libre
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.3f, 0.5f);
-
-
+	//camara aerea
 	aerialCamera = Camera(glm::vec3(0.0f, 450.0f, 0.0f),  //Posición muy arriba
 		glm::vec3(0.0f, 1.0f, 0.0f),                      //Vector Up
 		-90.0f,                                           //Yaw
@@ -449,7 +442,7 @@ int main()
 		180.0f, 0.0f, 0.3f, 0.5f);                              //Sin movimiento
 
 	//Cámara para puestos
-	camaraPuestos = Camera(glm::vec3(-80.0f, 20.0f, -40.0f),   //Frente a un puesto
+	camaraPuestos = Camera(glm::vec3(-80.0f, 10.0f, -90.0f),   //Frente a un puesto
 		glm::vec3(0.0f, 1.0f, 0.0f),
 		270.0f, 0.0f, 0.0f, 0.0f);
 
@@ -780,12 +773,7 @@ int main()
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
-	//Luz direccional, sólo 1 y siempre debe de existir 
-	//Para la luz del sol
-	//mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-	//	0.3f, 0.3f,
-	//	0.0f, 0.0f, -1.0f);
-
+	
 	unsigned int pointLightCount = 0;  //Contador de luces puntuales
 
 	//Empiezan luces de los postes
@@ -905,14 +893,14 @@ int main()
 		int camaraActual = mainWindow.getCamaraActiva();
 
 		// --- Si estoy en cámara aérea, apagar luces SIEMPRE
-		if (camaraActual == 1) {
+		if (camaraActual == 0) {
 			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
 				mainWindow.getLucesSpot()[i] = false;
 			}
 		}
 
 		// --- Si CAMBIO a cámara puestos, apagar luces solo una vez
-		if (camaraActual == 3 && camaraAnterior != 3) {
+		if (camaraActual == 2 && camaraAnterior != 2) {
 			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
 				mainWindow.getLucesSpot()[i] = false;
 			}
@@ -920,7 +908,7 @@ int main()
 		}
 
 		// --- Si CAMBIO a otra cámara diferente de puestos, resetear la bandera
-		if (camaraActual != 3) {
+		if (camaraActual != 2) {
 			yaApagueEnPuestos = false;
 		}
 
@@ -928,21 +916,16 @@ int main()
 		camaraAnterior = camaraActual;
 
 		//variables para control de camara y personajes
-		glm::vec3 cameraPos = camera.getCameraPosition();
-		glm::vec3 cameraDir = camera.getCameraDirection();
 		float angulo = atan2(terceraPersonaCamera.getCameraDirection().x, terceraPersonaCamera.getCameraDirection().z);
 		Camera* activeCamera;
 
 		//Switch que controla la camara activa 
 		switch (mainWindow.getCamaraActiva()) {
 		case 0:
-			activeCamera = &camera;
-			break;
-		case 1:
 			activeCamera = &aerialCamera;
 			break;
 
-		case 2: {
+		case 1: {
 			//Dirección que apunta la cámara (sin componente Y)
 			glm::vec3 forward = glm::normalize(glm::vec3(terceraPersonaCamera.getCameraDirection().x, 0.0f, terceraPersonaCamera.getCameraDirection().z));
 
@@ -956,11 +939,11 @@ int main()
 			activeCamera = &terceraPersonaCamera;
 			break;
 		}
-		case 3:
+		case 2:
 			activeCamera = &camaraPuestos;
 			break;
 		default:
-			activeCamera = &camera; //cámara libre
+			activeCamera = &terceraPersonaCamera; 
 			break;
 		}
 
@@ -969,9 +952,8 @@ int main()
 
 		//Switch para control de mouse en la camara activa
 		switch (mainWindow.getCamaraActiva()) {
-		case 0: camera.mouseControl(xChange, yChange); camera.keyControl(mainWindow.getsKeys(), deltaTime); break;
-		case 1: aerialCamera.mouseControl(xChange, yChange); break;
-		case 2:
+		case 0: aerialCamera.mouseControl(xChange, yChange); break;
+		case 1:
 			avatarCaminando = false;
 			terceraPersonaCamera.mouseControl(xChange, yChange);
 			glm::vec3 forward = glm::normalize(glm::vec3(terceraPersonaCamera.getCameraDirection().x, 0.0f, terceraPersonaCamera.getCameraDirection().z));
@@ -993,33 +975,33 @@ int main()
 				avatarCaminando = true;
 			}
 			break;
-		case 3:
+		case 2:
 			camaraPuestos.mouseControl(xChange, yChange);
 
 			// Caso para mover la cámara a diferentes puestos DEFAULT EN BATEO
 			if (mainWindow.getsKeys()[GLFW_KEY_X]) {
-				camaraPuestos.setYaw(-90.0f);
-				camaraPuestos.setPosition(glm::vec3(-80.0f, 20.0f, -40.0f)); // Puesto 1(BATEO)
+				camaraPuestos.setYaw(-90.0f);						
+				camaraPuestos.setPosition(glm::vec3(-80.0f, 10.0f, -90.0f)); // Puesto 1(BATEO)
 			}
 			if (mainWindow.getsKeys()[GLFW_KEY_C]) {
 				camaraPuestos.setYaw(-90.0f);
-				camaraPuestos.setPosition(glm::vec3(50.0f, 20.0f, -40.0f)); // Puesto 1(DARDOS)
+				camaraPuestos.setPosition(glm::vec3(50.0f, 10.0f, -90.0f)); // Puesto 1(DARDOS)
 			}
 			if (mainWindow.getsKeys()[GLFW_KEY_V]) {
 				camaraPuestos.setYaw(-90.0f);
-				camaraPuestos.setPosition(glm::vec3(180.0f, 20.0f, -40.0f));  // Puesto 2(DADOS)
+				camaraPuestos.setPosition(glm::vec3(180.0f, 10.0f, -90.0f));  // Puesto 2(DADOS)
 			}
 			if (mainWindow.getsKeys()[GLFW_KEY_B]) {
 				camaraPuestos.setYaw(90.0f);
-				camaraPuestos.setPosition(glm::vec3(180.0f, 20.0f, 40.0f));     // Puesto 3(HACHA)
+				camaraPuestos.setPosition(glm::vec3(180.0f, 10.0f, 90.0f));     // Puesto 3(HACHA)
 			}
 			if (mainWindow.getsKeys()[GLFW_KEY_N]) {
 				camaraPuestos.setYaw(90.0f);
-				camaraPuestos.setPosition(glm::vec3(50.0f, 20.0f, 40.0f));   // Puesto 4 (TOPOS)
+				camaraPuestos.setPosition(glm::vec3(50.0f, 10.0f, 90.0f));   // Puesto 4 (TOPOS)
 			}
 			if (mainWindow.getsKeys()[GLFW_KEY_M]) {
 				camaraPuestos.setYaw(90.0f);
-				camaraPuestos.setPosition(glm::vec3(-80.0f, 20.0f, 40.0f));   // Puesto 4 (BOLICHE)
+				camaraPuestos.setPosition(glm::vec3(-80.0f, 10.0f, 90.0f));   // Puesto 4 (BOLICHE)
 			}
 			break;
 		}
@@ -1030,11 +1012,10 @@ int main()
 
 		if (intensidad <= 0.09f) {
 			skyboxNoche.DrawSkybox(activeCamera->calculateViewMatrix(), projection);
-			//usandoSkyboxNoche = true;
+			
 		}
 		else if (intensidad >= 0.4f) {
 			skyboxDia.DrawSkybox(activeCamera->calculateViewMatrix(), projection);
-			//usandoSkyboxNoche = false;
 		}
 		else {
 			skyboxNoche.DrawSkybox(activeCamera->calculateViewMatrix(), projection);
@@ -1085,14 +1066,26 @@ int main()
 				esDeDia = true;
 			}
 		}
-		mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,  //Color
-			intensidad * 0.3f,  //Intensidad ambiental (más baja)
-			intensidad,  // Intensidad difusa (más fuerte)
-			0.0f, -1.0f, 0.0f);  //Dirección
+		
+		// Actualiza el ángulo del sol
+		float anguloSol = glm::radians(180.0f * intensidad);  
+
+		// Calcula dirección del sol rotando en eje X (amanecer → mediodía → anochecer)
+		glm::vec3 direccionSol;
+		direccionSol.x = cos(anguloSol);
+		direccionSol.y = -1.0f;
+		direccionSol.z = sin(anguloSol);
+
+		mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,  // Color
+			intensidad * 0.3f,                          // Ambiental
+			intensidad,                                 // Difusa
+			direccionSol.x, direccionSol.y, direccionSol.z);  // Dirección
+
+
 		shaderList[0].SetDirectionalLight(&mainLight);
 
 		//Bloque para control de postes automaticos
-		if (intensidad <= 0.09) {
+		if (intensidad <= 0.25) {
 			shaderList[0].SetPointLights(pointLights, pointLightCount);      // lámpara encendida
 		}
 		else if (intensidad >= 0.3 ) {
@@ -1120,7 +1113,7 @@ int main()
 
 		//Redenrizado del puesto de jaula de bateo
 		bateo(model, uniformModel, objetosBateo);
-		actualizarBateo(0.05f);
+		actualizarBateo(deltaTime * 0.05f);
 		if (mainWindow.getsKeys()[GLFW_KEY_Y]) {
 			lanzarBateo();
 		}
@@ -1128,7 +1121,7 @@ int main()
 
 		//Redenrizado del puesto de dados
 		dados(model, uniformModel, objetosDados);
-		actualizarDados(0.01f);
+		actualizarDados(deltaTime * 0.05f);
 		if (mainWindow.getsKeys()[GLFW_KEY_U]) {
 			lanzarDados();
 		}
@@ -1136,21 +1129,21 @@ int main()
 
 		//Redenrizado del puesto de dardos
 		dardos(model, uniformModel, objetosDardos);
-		actualizarDardos(0.05f);
+		actualizarDardos(deltaTime * 0.05f);
 		if (mainWindow.getsKeys()[GLFW_KEY_I]) {
 			lanzarDardo();
 		}
 
 		////Redenrizado del puesto de bolos
 		bolos(model, uniformModel, objetosBolos);
-		actualizarBolos(0.05f);
+		actualizarBolos(deltaTime * 0.05f);
 		if (mainWindow.getsKeys()[GLFW_KEY_O]) {
 			lanzarBola();
 		}
 
 		//Redenrizado del puesto de golpea al topo
 		topos(model, uniformModel, objetosTopos);
-		actualizarTopos(0.05f);
+		actualizarTopos(deltaTime * 0.05f);
 		if (mainWindow.getsKeys()[GLFW_KEY_P]) {
 			activarTopos();
 		}

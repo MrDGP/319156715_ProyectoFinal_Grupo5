@@ -28,7 +28,7 @@ public:
 
 	GLfloat getLuminaria() { return luminaria; }
 	GLfloat getLucesCarro() { return lucesCarro; }
-	int getCamaraActiva() { return camaraActiva; }	 // 0 = libre, 1 = aérea, 2 = tercera persona, 3 = lámpara
+	int getCamaraActiva() { return camaraActiva; }	 //0 = aérea, 1 = tercera persona, 2 = puestos
 	bool* getLucesSpot() { return lucesSpot; }
 
 

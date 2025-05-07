@@ -90,6 +90,11 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	model = glm::mat4(1.0);
 	model = glm::translate(model, glm::vec3(107.0f, 6.2f+desplazamientoSalto, 25.0f+movGumball));
 	model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
+	if (desplazamientoSalto > 0.1f) {
+		// Gira en el aire con una rotación variable
+		model = glm::rotate(model, glm::radians(angulovaria * 15.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	}
+
 	if (!avanzaGumball) {
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
@@ -100,7 +105,7 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	//Gumball pierna Derecha
 	modelaux = model;
 	model = glm::translate(model, glm::vec3(-0.314f, -3.252f, 0.0f));
-	model = glm::rotate(model, anguloPiernasg, glm::vec3(1.0f, 0.0f, 0.0f));
+	//model = glm::rotate(model, anguloPiernasg, glm::vec3(1.0f, 0.0f, 0.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[8]->RenderModel();
 	model = modelaux;
@@ -108,7 +113,7 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	//Gumball pierna Izquierda
 	modelaux = model;
 	model = glm::translate(model, glm::vec3(0.337f, -3.2876f, 0.0f));
-	model = glm::rotate(model, -anguloPiernasg, glm::vec3(1.0f, 0.0f, 0.0f));
+	//model = glm::rotate(model, -anguloPiernasg, glm::vec3(1.0f, 0.0f, 0.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[9]->RenderModel();
 	model = modelaux;
