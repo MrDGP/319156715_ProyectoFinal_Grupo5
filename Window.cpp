@@ -14,19 +14,6 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	width = windowWidth;
 	height = windowHeight;
 	muevex = 2.0f;
-
-	avanzarCarro = 0;
-	retrocederCarro = 0;
-	cofre = 0;
-	bandera1 = 0;
-
-	avanzarHeli = 0;
-	retrocederHeli = 0;
-
-	luminaria = 0;
-
-	lucesCarro = -1;
-
 	camaraActiva = 0;
 
 	for (size_t i = 0; i < 1024; i++)
@@ -118,16 +105,13 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	}
 	if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_1) {
-			theWindow->camaraActiva = 1; // aérea
+			theWindow->camaraActiva = 0; // aérea
 		}
 		if (key == GLFW_KEY_2) {
-			theWindow->camaraActiva = 0; // libre
+			theWindow->camaraActiva = 1; // tercera persona
 		}
 		if (key == GLFW_KEY_3) {
-			theWindow->camaraActiva = 2; // tercera persona
-		}
-		if (key == GLFW_KEY_4) {
-			theWindow->camaraActiva = 3; // PUESTOS
+			theWindow->camaraActiva = 2; // PUESTOS
 		}
 	}
 
@@ -156,7 +140,7 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	// ---------------------------------------------
 	// C - controlar puesto 1
 	if (key == GLFW_KEY_C && action == GLFW_PRESS) {
-		if (theWindow->getCamaraActiva() == 3) {
+		if (theWindow->getCamaraActiva() == 2) {
 			theWindow->puestoActual = 1;
 			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
 				if (i == theWindow->puestoActual) {
@@ -175,7 +159,7 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	// ---------------------------------------------
 	// V - controlar puesto 2
 	if (key == GLFW_KEY_V && action == GLFW_PRESS) {
-		if (theWindow->getCamaraActiva() == 3) {
+		if (theWindow->getCamaraActiva() == 2) {
 			theWindow->puestoActual = 2;
 			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
 				if (i == theWindow->puestoActual) {
@@ -194,7 +178,7 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	// ---------------------------------------------
 	// B - controlar puesto 3
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
-		if (theWindow->getCamaraActiva() == 3) {
+		if (theWindow->getCamaraActiva() == 2) {
 			theWindow->puestoActual = 3;
 			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
 				if (i == theWindow->puestoActual) {
@@ -212,7 +196,7 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	// ---------------------------------------------
 	// N - controlar puesto 4
 	if (key == GLFW_KEY_N && action == GLFW_PRESS) {
-		if (theWindow->getCamaraActiva() == 3) {
+		if (theWindow->getCamaraActiva() == 2) {
 			theWindow->puestoActual = 4;
 			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
 				if (i == theWindow->puestoActual) {
@@ -230,7 +214,7 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	// ---------------------------------------------
 	// M - controlar puesto 5
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
-		if (theWindow->getCamaraActiva() == 3) {
+		if (theWindow->getCamaraActiva() == 2) {
 			theWindow->puestoActual = 5;
 			for (int i = 0; i < MAX_SPOT_LIGHTS; i++) {
 				if (i == theWindow->puestoActual) {
