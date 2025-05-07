@@ -18,3 +18,4 @@ void renderStand(glm::mat4 model, GLuint uniformModel, Model &stand, Model &reja
 void renderHachas(glm::mat4 model, GLuint uniformModel, Model& hacha, glm::vec3 posicion);
 void renderObjetivos(glm::mat4 model, GLuint uniformModel, Model& objetivo, glm::vec3 posicion);
 void lanzarHacha();
+void actualizarHacha(float deltaTime);

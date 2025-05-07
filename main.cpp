@@ -174,7 +174,6 @@ Model wario;
 //Variables para modelos de la zona de fotos
 Model casaConSnoopy;
 Model gumball;
-Model yoshi;
 Model cuerpowoodstock;
 Model alaDerecha;
 Model alaIzquierda;
@@ -183,6 +182,11 @@ Model piernaDerechaGumball;
 Model brazoIzquierdoGumball;
 Model brazoDerechoGumball;
 Model colaGumball;
+Model Yoshi;
+Model YoshiManoD;
+Model YoshiManoI;
+Model YoshiPataD;
+Model YoshiPataI;
 
 //Variables para avatar principal
 Model brazoIzquierdoAvatar;
@@ -605,8 +609,8 @@ int main()
 	casaConSnoopy.LoadModel("Models/casaConSnoopy.obj");
 	gumball = Model();
 	gumball.LoadModel("Models/gumball.obj");
-	yoshi = Model();
-	yoshi.LoadModel("Models/yoshi.obj");
+	Yoshi = Model();
+	Yoshi.LoadModel("Models/Yoshi.obj");
 	cuerpowoodstock = Model();
 	cuerpowoodstock.LoadModel("Models/cuerpowoodstock.obj");
 	alaDerecha = Model();
@@ -624,6 +628,15 @@ int main()
 	piernaIzquierdaGumball.LoadModel("Models/piernaIzquierdaGumball.obj");
 	colaGumball = Model();
 	colaGumball.LoadModel("Models/colaGumball.obj");
+
+	YoshiManoD = Model();
+	YoshiManoD.LoadModel("Models/YoshiManoD.obj");
+	YoshiManoI = Model();
+	YoshiManoI.LoadModel("Models/YoshiManoI.obj");
+	YoshiPataD = Model();
+	YoshiPataD.LoadModel("Models/YoshiPataD.obj");
+	YoshiPataI = Model();
+	YoshiPataI.LoadModel("Models/YoshiPataI.obj");
 
 	//Carga de modelos Avatar principal
 	brazoDerechoAvatar = Model();
@@ -731,7 +744,7 @@ int main()
 	//push_back de modelos de la zona de fotos
 	objetosZonaFotos.push_back(&casaConSnoopy);
 	objetosZonaFotos.push_back(&gumball);
-	objetosZonaFotos.push_back(&yoshi);
+	objetosZonaFotos.push_back(&Yoshi);
 	objetosZonaFotos.push_back(&cuerpowoodstock);
 	objetosZonaFotos.push_back(&alaDerecha);
 	objetosZonaFotos.push_back(&alaIzquierda);
@@ -740,6 +753,10 @@ int main()
 	objetosZonaFotos.push_back(&piernaDerechaGumball);
 	objetosZonaFotos.push_back(&piernaIzquierdaGumball);
 	objetosZonaFotos.push_back(&colaGumball);
+	objetosZonaFotos.push_back(&YoshiManoD);
+	objetosZonaFotos.push_back(&YoshiManoI);
+	objetosZonaFotos.push_back(&YoshiPataD);
+	objetosZonaFotos.push_back(&YoshiPataI);
 
 	//push_back de modelos del arco
 	objetosArco.push_back(&arcoLetrero);
@@ -1107,6 +1124,7 @@ int main()
 
 		//Redenrizado del puesto de lanzamiento de hacha
 		hacha(model, uniformModel, objetosHacha);
+		actualizarHacha(0.01f);
 		if (mainWindow.getsKeys()[GLFW_KEY_T]) {
 			lanzarHacha();
 		}
@@ -1158,7 +1176,7 @@ int main()
 		NPCs(model, uniformModel, personajesNPCs);
 
 		//Renderizado de zona de fotos
-		zonaFotos(model, uniformModel, objetosZonaFotos, deltaTime);
+		zonaFotos(model, uniformModel, objetosZonaFotos, 0.05f);
 
 		//Renderizado del arco
 		arco(model, uniformModel, uniformTextureOffset, objetosArco, deltaTime, letreroTexture, meshList);
