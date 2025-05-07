@@ -30,32 +30,36 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	
 	//Casa con Snoopy
 
-	vuelaSnoopy += 0.0007f * deltaTime;
+	vuelaSnoopy += 0.1f * deltaTime;
 
-	amplitud = 4.5;
-	velocidadSnoopy = 0.2f;
-	snoopyY = amplitud * sin(velocidadSnoopy * (vuelaSnoopy * 200));
-	snoopyZ = amplitud * cos(velocidadSnoopy * (vuelaSnoopy * 200));
+	if (vuelaSnoopy >= 360.0f) {
+		vuelaSnoopy = 0.0f;
+	}
+
+	amplitud = 12.0;
+	velocidadSnoopy = 0.3f;
+	snoopyY = amplitud * sin(velocidadSnoopy * vuelaSnoopy);
+	snoopyZ = amplitud * cos(velocidadSnoopy * vuelaSnoopy);
 
 	//Ida y vuelta Snoopy
 
 	if (movSnoopy > -100.0f && avanzaSnoopy == true) {
-		movSnoopy -= movOffsetSnoopy * vuelaSnoopy;
+		movSnoopy -= movOffsetSnoopy;
 	}
 	else if (movSnoopy < -100.0f) {
-		movSnoopy += movOffsetSnoopy * vuelaSnoopy;
+		movSnoopy += movOffsetSnoopy;
 		avanzaSnoopy = false;
 	}
 	else if (movSnoopy < 5.0f && avanzaSnoopy == false) {
-		movSnoopy += movOffsetSnoopy * vuelaSnoopy;
+		movSnoopy += movOffsetSnoopy;
 	}
 	else {
-		movSnoopy -= movOffsetSnoopy * vuelaSnoopy;
+		movSnoopy -= movOffsetSnoopy;
 		avanzaSnoopy = true;
 	}
 
 	model = glm::mat4(1.0);
-	model = glm::translate(model, glm::vec3(100.0f + movSnoopy, 4.0f + snoopyY, 4.0f + snoopyZ));
+	model = glm::translate(model, glm::vec3(100.0f + movSnoopy, 15.0f + snoopyY, 4.0f + snoopyZ));
 	model = glm::scale(model, glm::vec3(50.0f, 40.0f, 50.0f));
 	model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 	if (avanzaSnoopy == false) {
