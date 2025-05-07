@@ -54,37 +54,6 @@ void renderHachas(glm::mat4 model, GLuint uniformModel, Model &hacha, glm::vec3 
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	hacha.RenderModel();
 
-	if (lanzandoHacha) {
-		if (!impactoHacha) {
-			if (avanceHacha < 31.0f) {
-				avanceHacha += 15.0f * 0.016f;
-				rotacionHacha += 720.0f * 0.016f;
-			}
-			else {
-				tiempoImpactoHacha += 0.016f;
-				if (tiempoImpactoHacha >= 3.0f) {
-					lanzandoHacha = false;
-					impactoHacha = false;
-					tiempoImpactoHacha = 0.0f;
-					avanceHacha = 0.0f;
-					rotacionHacha = 0.0f;
-				}
-				else {
-					impactoHacha = true;
-				}
-			}
-		}
-		else {
-			tiempoImpactoHacha += 0.016f;
-			if (tiempoImpactoHacha >= 3.0f) {
-				lanzandoHacha = false;
-				impactoHacha = false;
-				tiempoImpactoHacha = 0.0f;
-				avanceHacha = 0.0f;
-				rotacionHacha = 0.0f;
-			}
-		}
-	}
 	//Hacha animada
 	model = glm::mat4(1.0);
 	model = glm::translate(model, glm::vec3(167.0f, 4.7f, 125.0f));
@@ -114,5 +83,39 @@ void lanzarHacha() {
 		tiempoImpactoHacha = 0.0f;
 		avanceHacha = 0.0f;
 		rotacionHacha = 0.0f;
+	}
+}
+
+void actualizarHacha(float deltaTime) {
+	if (lanzandoHacha) {
+		if (!impactoHacha) {
+			if (avanceHacha < 31.0f) {
+				avanceHacha += 15.0f * deltaTime;
+				rotacionHacha += 720.0f * deltaTime;
+			}
+			else {
+				tiempoImpactoHacha += deltaTime;
+				if (tiempoImpactoHacha >= 3.0f) {
+					lanzandoHacha = false;
+					impactoHacha = false;
+					tiempoImpactoHacha = 0.0f;
+					avanceHacha = 0.0f;
+					rotacionHacha = 0.0f;
+				}
+				else {
+					impactoHacha = true;
+				}
+			}
+		}
+		else {
+			tiempoImpactoHacha += deltaTime;
+			if (tiempoImpactoHacha >= 3.0f) {
+				lanzandoHacha = false;
+				impactoHacha = false;
+				tiempoImpactoHacha = 0.0f;
+				avanceHacha = 0.0f;
+				rotacionHacha = 0.0f;
+			}
+		}
 	}
 }
