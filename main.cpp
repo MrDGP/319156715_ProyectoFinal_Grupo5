@@ -1124,7 +1124,7 @@ int main()
 
 		//Redenrizado del puesto de lanzamiento de hacha
 		hacha(model, uniformModel, objetosHacha);
-		actualizarHacha(0.01f);
+		actualizarHacha(deltaTime * 0.01f);
 		if (mainWindow.getsKeys()[GLFW_KEY_T]) {
 			lanzarHacha();
 		}
