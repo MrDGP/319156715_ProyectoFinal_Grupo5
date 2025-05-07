@@ -1091,7 +1091,7 @@ int main()
 		glm::vec3 direccionSol;
 		direccionSol.x = cos(anguloSol);
 		direccionSol.y = -1.0f;
-		direccionSol.z = sin(anguloSol);
+		direccionSol.z = 0.0f;
 
 		mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,  // Color
 			intensidad * 0.3f,                          // Ambiental

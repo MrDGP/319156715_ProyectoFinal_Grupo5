@@ -15,10 +15,11 @@ static bool avanzaSnoopy = true;
 
 //variables para animacionde Gumball;
 static float angulovaria = 0.0f;
+static float tiempoGumball = 0.0f;
 static float movGumball = 0.0f;
-static float offsetGumball = 0.05f; 
 static bool avanzaGumball = true;
-
+float anguloExtremidadesG = 0.0f;
+static float rotacionContinuaGumball = 0.0f;
 
 //variables para animacion de Yoshi;
 static float angSaltoYoshi = 0.0f;
@@ -90,39 +91,51 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	objetosZonaFotos[0]->RenderModel();
 	//--------------------------------------------------------------------------------------------------------------------------
 
-	float anguloPiernasg = glm::radians(30.0f * sin(glm::radians(angulovaria * 12.0f)));
-	float anguloAleteo = glm::radians(45.0f * sin(glm::radians(angulovaria * 15.0f)));
-	float anguloCola = glm::radians(40.0f * sin(glm::radians(angulovaria * 25.0f)));
-	float desplazamientoSalto = fabs(1.8f * sin(glm::radians(angulovaria * 6.0f)));
+	// Acumulador de tiempo
+	tiempoGumball += deltaTime;
 
+	anguloExtremidadesG += 0.05f * deltaTime;
 
-	// Movimiento ida y vuelta de Gumball
-	if (movGumball < 10.0f && avanzaGumball) {
-		movGumball += offsetGumball;
+	// Movimiento de ida y vuelta en eje Z
+	float distanciaMax = 10.0f;
+	float tiempoViaje = 4.0f;  // segundos en ir de -distanciaMax a +distanciaMax
+	float velocidad = (0.05f * distanciaMax / tiempoViaje) * deltaTime;
+
+	if (avanzaGumball) {
+		movGumball += velocidad;
+		if (movGumball >= distanciaMax) avanzaGumball = false;
 	}
 	else {
-		avanzaGumball = false;
+		movGumball -= velocidad;
+		if (movGumball <= -distanciaMax) avanzaGumball = true;
 	}
 
-	if (movGumball > -10.0f && !avanzaGumball) {
-		movGumball -= offsetGumball;
-	}
-	else {
-		avanzaGumball = true;
-	}
+	// Aumentar rotación continuaa
+	rotacionContinuaGumball += 5.0f * deltaTime;  // 60 grados por segundo
+	if (rotacionContinuaGumball >= 360.0f)
+		rotacionContinuaGumball -= 360.0f;
+
+
+	// Salto vertical
+	float desplazamientoY = fabs(1.2f * sin(anguloExtremidadesG * 1.5f));
+
+	// Animaciones visibles
+	float anguloBrazos = glm::radians(40.0f * sin(anguloExtremidadesG * 4.0f));
+	float anguloPiernas = glm::radians(15.0f * sin(anguloExtremidadesG * 4.0f));
+	float anguloCola = glm::radians(60.0f * sin(anguloExtremidadesG * 5.0f));
+	float giroDireccion = avanzaGumball ? 0.0f : 180.0f;
+
+	if (movGumball > 10.0f)
+		movGumball = 10.0f;
+	if (movGumball < -10.0f)
+		movGumball = -10.0f;
+
 
 	//Gumball cuerpo
 	model = glm::mat4(1.0);
-	model = glm::translate(model, glm::vec3(107.0f, 6.2f + desplazamientoSalto, 25.0f + movGumball));
+	model = glm::translate(model, glm::vec3(107.0f, 6.2f + desplazamientoY, 25.0f + movGumball));
+	model = glm::rotate(model, glm::radians(rotacionContinuaGumball + giroDireccion), glm::vec3(0, 1, 0));
 	model = glm::scale(model, glm::vec3(1.3f, 1.3f, 1.3f));
-	if (desplazamientoSalto > 0.1f) {
-		// Gira en el aire con una rotación variable
-		model = glm::rotate(model, glm::radians(angulovaria * 15.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	}
-
-	if (!avanzaGumball) {
-		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	}
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[1]->RenderModel();
 
@@ -130,7 +143,7 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	//Gumball pierna Derecha
 	modelaux = model;
 	model = glm::translate(model, glm::vec3(-0.314f, -3.252f, 0.0f));
-	//model = glm::rotate(model, anguloPiernasg, glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, anguloPiernas, glm::vec3(0.0f, 0.0f, 1.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[8]->RenderModel();
 	model = modelaux;
@@ -138,7 +151,7 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	//Gumball pierna Izquierda
 	modelaux = model;
 	model = glm::translate(model, glm::vec3(0.337f, -3.2876f, 0.0f));
-	//model = glm::rotate(model, -anguloPiernasg, glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, -anguloPiernas, glm::vec3(0.0f, 0.0f, 1.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[9]->RenderModel();
 	model = modelaux;
@@ -147,7 +160,7 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	modelaux = model;
 	model = glm::translate(model, glm::vec3(-0.3137f, -1.3153f, -0.2214f));
 	model = glm::rotate(model, -40 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::rotate(model, -anguloAleteo, glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, -anguloBrazos, glm::vec3(0.0f, 0.0f, 1.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[6]->RenderModel();
 	model = modelaux;
@@ -156,7 +169,7 @@ void zonaFotos(glm::mat4 model, GLuint uniformModel, std::vector<Model*> objetos
 	modelaux = model;
 	model = glm::translate(model, glm::vec3(0.545f, -1.2657f, -0.087f));
 	model = glm::rotate(model, -40 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::rotate(model, anguloAleteo, glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, anguloBrazos, glm::vec3(0.0f, 0.0f, 1.0f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	objetosZonaFotos[7]->RenderModel();
 	model = modelaux;
