@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<glew.h>
 #include<glfw3.h>
-
+#include "CommonValues.h"
 class Window
 {
 public:
@@ -28,8 +28,9 @@ public:
 
 	GLfloat getLuminaria() { return luminaria; }
 	GLfloat getLucesCarro() { return lucesCarro; }
+	int getCamaraActiva() { return camaraActiva; }	 //0 = aérea, 1 = tercera persona, 2 = puestos
+	bool* getLucesSpot() { return lucesSpot; }
 
-	GLfloat getPastel() { return pastel; }
 
 
 
@@ -50,7 +51,13 @@ private:
 
 	GLfloat avanzarHeli, retrocederHeli;
 
-	GLfloat luminaria, lucesCarro, pastel;
+	GLfloat luminaria, lucesCarro;
+
+	int camaraActiva;
+	
+	int puestoActual = 0; // Para saber en qué puesto estás
+	bool lucesSpot[MAX_SPOT_LIGHTS] = { false };
+
 
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);

@@ -89,6 +89,12 @@ void Camera::update()
 	up = glm::normalize(glm::cross(right, front));
 }
 
+void Camera::setYaw(float newYaw)
+{
+	yaw = newYaw;
+	update();  // para actualizar el giro de camara en los puestos
+}
+
 
 Camera::~Camera()
 {
