@@ -1,0 +1,87 @@
+﻿  Ambientacion.cpp
+  Bateo.cpp
+  Bolos.cpp
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Bolos.cpp(68,20): warning C4018: '<': no coinciden signed/unsigned
+  Camera.cpp
+  Comida.cpp
+  Dados.cpp
+  Dardos.cpp
+  DirectionalLight.cpp
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\DirectionalLight.cpp(18,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\DirectionalLight.cpp(19,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\DirectionalLight.cpp(21,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\DirectionalLight.cpp(22,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+  Arco.cpp
+  ZonaFotos.cpp
+  Hacha.cpp
+  Light.cpp
+  main.cpp
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.h(12,36): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\main.cpp(900,15): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\main.cpp(902,33): warning C4244: '+=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+  Material.cpp
+  Mesh_tn.cpp
+  Model.cpp
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Model.cpp(16,10): warning C4477: 'printf' : la cadena de formato '%s' requiere un argumento de tipo 'char *', pero el argumento variádico 1 tiene el tipo 'const std::string'
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Model.cpp(16,80): warning C4474: "printf": se pasaron demasiados argumentos para la cadena de formato
+      C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Model.cpp(16,80):
+      los marcadores de posición y sus parámetros esperan 1 argumentos variádicos, pero se proporcionaron 2
+  
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Model.cpp(51,7): warning C4804: '<': uso no seguro del tipo 'bool' en la operación
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Model.cpp(51,21): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Model.cpp(138,14): warning C4477: 'printf' : la cadena de formato '%s' requiere un argumento de tipo 'char *', pero el argumento variádico 1 tiene el tipo 'std::string'
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Model.cpp(147,14): warning C4477: 'printf' : la cadena de formato '%s' requiere un argumento de tipo 'char *', pero el argumento variádico 1 tiene el tipo 'std::string'
+  NPCs.cpp
+  PointLight.cpp
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\PointLight.cpp(28,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\PointLight.cpp(29,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\PointLight.cpp(30,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\PointLight.cpp(32,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\PointLight.cpp(33,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\PointLight.cpp(34,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\PointLight.cpp(35,14): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+  Shader_light.cpp
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(215,75): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(215,26): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(214,91): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(214,42): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(228,98): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(228,62): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(228,24): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(227,70): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(227,24): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(226,88): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Shader_light.cpp(226,42): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+  Skybox.cpp
+  Compilando...
+  Sphere.cpp
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Sphere.cpp(39,13): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Sphere.cpp(43,16): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+  SpotLight.cpp
+  Texture.cpp
+  Tierra.cpp
+  Topos.cpp
+  Window.cpp
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.h(12,36): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+  (compilando archivo de origen "Window.cpp")
+  
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.h(13,37): warning C4244: 'return': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+  (compilando archivo de origen "Window.cpp")
+  
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.cpp(269,22): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.cpp(270,22): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.cpp(274,28): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.cpp(275,40): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.cpp(277,21): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.cpp(278,21): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+  Generando código
+  Previous IPDB not found, fall back to full compilation.
+C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Window.cpp(77): warning C4715: 'Window::Initialise': no todas las rutas de acceso de control devuelven un valor
+  All 1367 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Generación de código finalizada
+  Proyecto.vcxproj -> C:\Users\ilima\Downloads\Lab computación gráfica\Proyecto\Proyecto\Release\Proyecto.exe
