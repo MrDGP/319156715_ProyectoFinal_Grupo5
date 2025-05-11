@@ -8,7 +8,9 @@
 
 *INTEGRANTES*: 
 Cordero Martínez Ileana Angélica - 319283064
+
 Gutiérrez Preza Diego - 319156715
+
 Pérez Balcázar José Andrés - 319094479
 *GRUPO DE LABORATORIO*: 03    
 *GRUPO DE TEORÍA*: 05    
